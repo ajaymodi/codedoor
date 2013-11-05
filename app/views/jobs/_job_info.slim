@@ -1,11 +1,14 @@
 - is_client = @job.is_client?(current_user)
 .span3
   p
-    strong
-      - if is_client
+    - if is_client
+      strong
         = link_to @programmer.user.full_name, programmer_path(@programmer), target: '_blank'
-      - else
-        = link_to @job.client.user.full_name, client_path(@job.client), target: '_blank'
+    - else
+      strong
+        = @job.client.user.full_name
+      br
+      = @job.client.company
   p
     - if @job.has_not_started?
       = is_client ? @programmer.client_rate_text : @programmer.programmer_rate_text
