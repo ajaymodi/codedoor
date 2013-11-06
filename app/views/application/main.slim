@@ -4,9 +4,14 @@ p
   = link_to('Search programmers', programmers_path)
 p
   = link_to('Edit user account', edit_user_path(current_user))
-  - if current_user.programmer.present?
-    p
-      = link_to('View your information', programmer_path(current_user.programmer))
-  - elsif current_user.checked_terms?
-    p
-      = link_to('Create programmer account', edit_user_programmer_path(current_user))
+  - if current_user.checked_terms?
+    - if current_user.completed_programmer_account?
+      p
+        = link_to('View your information', programmer_path(current_user.programmer))
+    - else
+      p
+        = link_to('Create programmer account', edit_user_programmer_path(current_user))
+
+    - unless current_user.client.present?
+      p
+        = link_to('Create client account', new_user_client_path(current_user))
