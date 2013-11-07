@@ -45,11 +45,12 @@
               .span6
                 = repo.description
         - if @programmer.github_repos.shown.size > GithubRepo::SHOWN
-          strong
-            a id="show-more-repos"
-              | Show More Repos
-          javascript:
-            $('#show-more-repos').on('click', function(){ $('#hidden-repos').show(); $('#show-more-repos').hide(); });
+          p
+            strong
+              a id="show-more-repos"
+                | Show More Repos
+            javascript:
+              $('#show-more-repos').on('click', function(){ $('#hidden-repos').show(); $('#show-more-repos').hide(); });
 
           #hidden-repos.hidden
             - @programmer.github_repos.shown[(GithubRepo::SHOWN)..(-1)].each do |repo|
