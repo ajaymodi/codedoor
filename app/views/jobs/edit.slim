@@ -10,7 +10,7 @@
             strong
               = message.sender_name
             br
-            = message.content
+            = simple_format(message.content)
     .offset1.span6
       p
         = text_area_tag 'job_message[content]', @job_message.present? ? @job_message.content : '', class: 'span6'

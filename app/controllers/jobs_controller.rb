@@ -28,6 +28,7 @@ class JobsController < ApplicationController
     @job.client_id = current_user.client.id
     @job.rate = @programmer.rate
     @job.availability = @programmer.availability
+    @job.job_messages.first.sender_is_client = true if @job.job_messages.present?
     authorize! :create, @job
     if @job.save
       UserMailer.message_sent(@job.other_user(current_user), @job, @job.job_messages.first, current_user).deliver

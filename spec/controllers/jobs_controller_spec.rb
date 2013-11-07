@@ -80,6 +80,7 @@ describe JobsController do
       response.should redirect_to(edit_job_path(Job.last.id))
       job = Job.last
       job.name.should eq('Test job')
+      job.job_messages.first.sender_is_client.should be_true
       job.job_messages.first.content.should eq('Test message')
     end
 
