@@ -6,6 +6,10 @@ a {
   cursor: pointer;
 }
 
+textarea {
+  height: 80px;
+}
+
 .main-content {
   width: 960px;
   display: block;
@@ -28,8 +32,4 @@ a {
 
 .ajax-load {
   margin-left: 5px;
-}
-
-textarea.span6 {
-  height: 80px;
 }
