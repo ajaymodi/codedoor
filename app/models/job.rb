@@ -11,14 +11,25 @@ class Job < ActiveRecord::Base
   validates :name, presence: true
   validates :rate, presence: true
   validates :availability, inclusion: { in: ['part-time', 'full-time'], message: 'must be selected' }
+  validates :started_at, presence: true, if: Proc.new{|p| p.running? || p.finished?}
+  validates :finished_at, presence: true, if: Proc.new{|p| p.finished? || p.disabled?}
 
   validate :client_and_programmer_are_different
   validate :rate_is_unchanged, unless: :has_not_or_has_just_started?
   validate :availability_is_unchanged, unless: :has_not_or_has_just_started?
+  validate :finished_after_started, if: Proc.new{|p| p.started_at && p.finished_at}
 
   after_save :calculate_programmer_availability
 
   state_machine :state, initial: :has_not_started do
+    before_transition to: :running do |job, transition|
+      job.started_at = Time.now
+    end
+
+    before_transition to: [:finished, :disabled] do |job, transition|
+      job.finished_at = Time.now
+    end
+
     event :offer do
       transition has_not_started: :offered
     end
@@ -36,7 +47,7 @@ class Job < ActiveRecord::Base
     end
 
     event :finish do
-      transition [:offered, :running] => :finished
+      transition running: :finished
     end
 
     event :disable do
@@ -81,6 +92,10 @@ class Job < ActiveRecord::Base
 
   def availability_is_unchanged
     errors.add(:availability, 'must stay the same for the job') if availability_changed?
+  end
+
+  def finished_after_started
+    errors.add(:finished_at, 'must come after time started at') if finished_at < started_at
   end
 
 end

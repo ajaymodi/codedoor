@@ -62,6 +62,7 @@ describe Job do
 
     it 'should allow start if offered' do
       job = FactoryGirl.create(:job, state: 'offered')
+      job.finished_at.should be_nil
       job.start!
       job.running?.should be_true
 
@@ -87,14 +88,12 @@ describe Job do
       -> {job.decline!}.should raise_error
     end
 
-    it 'should allow finish if offered or running' do
-      job = FactoryGirl.create(:job, state: 'offered')
-      job.finish!
-      job.finished?.should be_true
-
+    it 'should allow finish if running' do
       job = FactoryGirl.create(:job, state: 'running')
+      job.finished_at.should be_nil
       job.finish!
       job.finished?.should be_true
+      job.finished_at.should_not be_nil
 
       job = FactoryGirl.create(:job, state: 'has_not_started')
       -> {job.finish!}.should raise_error
@@ -102,8 +101,10 @@ describe Job do
 
     it 'should always allow disable' do
       job = FactoryGirl.create(:job, state: 'has_not_started')
+      job.finished_at.should be_nil
       job.disable!
       job.disabled?.should be_true
+      job.finished_at.should_not be_nil
 
       job = FactoryGirl.create(:job, state: 'offered')
       job.disable!
