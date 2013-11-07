@@ -1,5 +1,5 @@
 = form_for [@job], url: {action: :create}, html: {class: 'form-horizontal'} do |f|
-  .span9
+  .span8
     = f.hidden_field :programmer_id, value: @programmer.id
     .control-group class="#{model_attribute_class(@job, :name)}"
       .control-label
