@@ -1,6 +1,6 @@
 - is_client = @job.is_client?(current_user)
 = form_for [@job], url: {action: :create_message}, html: {class: 'form-horizontal'}, method: :post do |f|
-  .span8
+  .span7
     .offset1.span6
       - @job.job_messages.each do |message|
         - if message.valid?
