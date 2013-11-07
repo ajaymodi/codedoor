@@ -10,6 +10,10 @@ textarea {
   height: 80px;
 }
 
+textarea.longer-text {
+  height: 160px;
+}
+
 .main-content {
   width: 960px;
   display: block;

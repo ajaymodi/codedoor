@@ -1,4 +1,3 @@
-- is_client = @job.is_client?(current_user)
 = form_for [@job], url: {action: :create_message}, html: {class: 'form-horizontal'}, method: :post do |f|
   .span8
     .offset1.span6
@@ -13,7 +12,7 @@
             = simple_format(message.content)
     .offset1.span6
       p
-        = text_area_tag 'job_message[content]', @job_message.present? ? @job_message.content : '', class: 'span6'
+        = text_area_tag 'job_message[content]', @job_message.present? ? @job_message.content : '', class: 'span6 longer-text'
     .offset1.span6
       p
         = f.submit 'Send Message', class: 'btn', data: {disable_with: 'Submitting...'}

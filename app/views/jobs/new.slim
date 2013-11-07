@@ -11,7 +11,7 @@
       .control-label
         | Message
       .controls
-        = text_area_tag 'job[job_messages_attributes][][content]', @job.job_messages.first.present? ? @job.job_messages.first.content : '', class: 'span5'
+        = text_area_tag 'job[job_messages_attributes][][content]', @job.job_messages.first.present? ? @job.job_messages.first.content : '', class: 'span5 longer-text'
     .control-group
       .controls
         = f.submit 'Send Message', class: 'btn', data: {disable_with: 'Submitting...'}
