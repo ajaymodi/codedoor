@@ -1,7 +1,10 @@
 doctype html
 html
   head
-    title CodeDoor
+    - if user_signed_in?
+      title CodeDoor | Hire Open Source Contributors
+    - else
+      title Programming Jobs | Hire Open Source Contributors | CodeDoor
     = favicon_link_tag 'favicon.ico'
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
