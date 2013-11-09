@@ -20,7 +20,7 @@ describe UserMailer do
 
     it 'renders the body' do
       mail.body.encoded.should match('Dear John Smith,')
-      mail.body.encoded.should match('Welcome to CodeDoor, the marketplace for programmers that have contributed to open source.')
+      mail.body.encoded.should match('Welcome to CodeDoor, the marketplace for programmers who have contributed to open source.')
       mail.body.encoded.should match('If you have any questions, feel free to give an email to rcheng@codedoor.com.')
       mail.body.encoded.should match('-The CodeDoor Team')
     end
