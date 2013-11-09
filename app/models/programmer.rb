@@ -2,7 +2,7 @@ class Programmer < ActiveRecord::Base
   include HasRate
 
   # TODO: Add real ranking system, but this at least incentivizes creating instead of penalizing updating
-  default_scope { order('id ASC') }
+  default_scope { order('modified_rank_score DESC, id ASC') }
 
   belongs_to :user
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131107010759) do
+ActiveRecord::Schema.define(version: 20131109060245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,18 @@ ActiveRecord::Schema.define(version: 20131107010759) do
   end
 
   add_index "github_repos", ["programmer_id"], name: "index_github_repos_on_programmer_id", using: :btree
+
+  create_table "job_days", force: true do |t|
+    t.integer  "job_id"
+    t.string   "work_type"
+    t.integer  "hours_counted"
+    t.date     "date_of_work"
+    t.text     "activity_description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "job_days", ["job_id"], name: "index_job_days_on_job_id", using: :btree
 
   create_table "job_messages", force: true do |t|
     t.integer  "job_id"
@@ -120,8 +132,11 @@ ActiveRecord::Schema.define(version: 20131107010759) do
     t.string   "state"
     t.boolean  "qualified"
     t.string   "calculated_availability"
+    t.integer  "rank_score"
+    t.float    "modified_rank_score"
   end
 
+  add_index "programmers", ["modified_rank_score"], name: "index_programmers_on_modified_rank_score", using: :btree
   add_index "programmers", ["user_id"], name: "index_programmers_on_user_id", using: :btree
 
   create_table "programmers_skills", id: false, force: true do |t|

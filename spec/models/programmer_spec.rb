@@ -158,4 +158,17 @@ describe Programmer do
     end
   end
 
+  # TODO: Actually add rank scores and calculate modified_rank_score from that
+  context 'modified_rank_score' do
+    it 'should be used in the default scope' do
+      p1 = FactoryGirl.create(:programmer, modified_rank_score: 5)
+      p2 = FactoryGirl.create(:programmer, modified_rank_score: 6)
+      p3 = FactoryGirl.create(:programmer, modified_rank_score: 4)
+      p4 = FactoryGirl.create(:programmer, modified_rank_score: 7)
+      p5 = FactoryGirl.create(:programmer, modified_rank_score: 3)
+
+      Programmer.all.should eq([p4, p2, p1, p3, p5])
+    end
+  end
+
 end
