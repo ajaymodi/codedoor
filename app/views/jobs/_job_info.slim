@@ -10,10 +10,12 @@
       br
       = @job.client.company
   p
-    - if @job.has_not_started?
-      = is_client ? @programmer.client_rate_text : @programmer.programmer_rate_text
+    - rate_text_object = @job.has_not_started? ? @programmer : @job
+    - if is_client
+      = client_rate_text(rate_text_object)
     - else
-      = is_client ? @job.client_rate_text : @job.programmer_rate_text
+      = programmer_rate_text(rate_text_object)
+
   - unless @job.new_record?
     - if @job.has_not_started?
       - if is_client
