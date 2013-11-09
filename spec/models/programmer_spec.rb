@@ -165,7 +165,7 @@ describe Programmer do
     end
     it 'should show rate for part-time programmers' do
       programmer = FactoryGirl.create(:programmer, availability: 'part-time', rate: 50)
-      programmer.client_rate_text.should eq('$450 / 8 hours')
+      programmer.client_rate_text.should eq('$56.25 / hour')
     end
     it 'should not show rate for unavailable programmers' do
       programmer = FactoryGirl.create(:programmer, availability: 'unavailable', rate: 50)
@@ -180,7 +180,7 @@ describe Programmer do
     end
     it 'should show rate for part-time programmers' do
       programmer = FactoryGirl.create(:programmer, availability: 'part-time', rate: 50)
-      programmer.programmer_rate_text.should eq('$400 / 8 hours')
+      programmer.programmer_rate_text.should eq('$50 / hour')
     end
     it 'should not show rate for unavailable programmers' do
       programmer = FactoryGirl.create(:programmer, availability: 'unavailable', rate: 50)

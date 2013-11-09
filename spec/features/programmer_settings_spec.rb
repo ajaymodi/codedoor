@@ -21,7 +21,7 @@ feature 'Programmer settings', js: true do
     fill_in 'hourly_rate_to_programmer', with: 50
     click_button 'Save'
     page.should have_content 'Your programmer account has been updated.'
-    page.should have_content '$450 / 8 hours'
+    page.should have_content '$56.25 / hour'
   end
 
   scenario 'Modifying rates', js: true do

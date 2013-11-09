@@ -20,21 +20,21 @@ module HasRate
   end
 
   def client_rate_text
-    rate_text(daily_rate_to_client)
+    rate_text(false)
   end
 
   def programmer_rate_text
-    rate_text(daily_rate_to_programmer)
+    rate_text(true)
   end
 
   private
 
-  def rate_text(rate)
+  def rate_text(is_programmer)
     case availability
     when 'part-time'
-      "$#{rate} / 8 hours"
+      "$#{is_programmer ? rate : hourly_rate_to_client} / hour"
     when 'full-time'
-      "$#{rate} / day"
+      "$#{is_programmer ? daily_rate_to_programmer : daily_rate_to_client} / day"
     else
       'Unavailable'
     end

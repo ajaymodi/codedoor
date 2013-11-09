@@ -13,7 +13,7 @@ feature 'Job setup', js: true do
 
     click_link 'Contact'
 
-    page.should have_content '$450 / 8 hours'
+    page.should have_content '$56.25 / hour'
 
     fill_in 'Job Name', with: 'Test Job'
     find('#job_job_messages_attributes__content').set('Opening message')
