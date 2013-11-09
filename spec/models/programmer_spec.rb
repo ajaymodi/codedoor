@@ -166,8 +166,9 @@ describe Programmer do
       p3 = FactoryGirl.create(:programmer, modified_rank_score: 4)
       p4 = FactoryGirl.create(:programmer, modified_rank_score: 7)
       p5 = FactoryGirl.create(:programmer, modified_rank_score: 3)
+      p6 = FactoryGirl.create(:programmer, modified_rank_score: nil)
 
-      Programmer.all.should eq([p4, p2, p1, p3, p5])
+      Programmer.all.should eq([p4, p2, p1, p3, p5, p6])
     end
   end
 
