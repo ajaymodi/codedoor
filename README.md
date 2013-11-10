@@ -9,8 +9,6 @@ The CodeDoor platform is open source (MIT and BSD license).  See the LICENSE fil
 
 CodeDoor is available at https://www.codedoor.com/
 
-You can visit a staging version of CodeDoor at https://stealthcodedoor.herokuapp.com/
-
 ---------------
 
 CodeDoor is currently intended to run on Heroku.
