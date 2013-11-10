@@ -26,5 +26,6 @@ Codedoor::Application.routes.draw do
   end
 
   get '/terms', to: 'legal#terms'
+  get '/blog', to: 'blog#index'
 
 end
