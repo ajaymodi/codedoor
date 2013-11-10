@@ -16,6 +16,7 @@ describe ProgrammersController do
 
   before :each do
     @user = FactoryGirl.create(:user_checked_terms)
+    FactoryGirl.create(:client, user: @user)
     sign_in(@user)
   end
 
@@ -96,11 +97,10 @@ describe ProgrammersController do
       response.should redirect_to(edit_user_programmer_path(@user))
     end
 
-    it 'does not render the show template logged out if the programmer is not public' do
+    it 'if user is logged out if the programmer is not public, redirect to github' do
       sign_out(@user)
       get :show, id: @programmer.id
-      response.should redirect_to(root_path)
-      flash[:alert].should eq('Information cannot be found.')
+      response.should redirect_to(user_omniauth_authorize_path(:github))
     end
 
     it 'does not render the show template logged out if the programmer is not activated' do
@@ -307,11 +307,11 @@ describe ProgrammersController do
     it 'should create a github_repo if the user has made a contribution' do
       @user_account.username = 'dhh'
       @user_account.save!
-      
+
       FakeWebHelpers.mock_api_large_repo(@user_account.oauth_token)
       FakeWebHelpers.mock_scrape_rails_contributor('dhh')
       FakeWebHelpers.mock_rails_repo_request(@user_account.oauth_token)
-      
+
       post :verify_contribution, user_id: @user.id, id: @programmer.id, repo_owner: 'rails', repo_name: 'rails', format: :json
       response.response_code.should eq(200)
       JSON.parse(response.body)['success'].should eq('Your contributions to rails/rails have been added.')

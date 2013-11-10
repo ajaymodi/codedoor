@@ -1,5 +1,6 @@
 class ProgrammersController < ApplicationController
   before_filter :ensure_user_checked_terms, except: [:index, :show]
+  before_filter :client_or_programmer_required_for_codedoor_visibility, only: [:show]
   load_and_authorize_resource except: [:verify_contribution]
 
 
@@ -87,6 +88,11 @@ class ProgrammersController < ApplicationController
   end
 
   private
+
+  def client_or_programmer_required_for_codedoor_visibility
+    @programmer = Programmer.find(params[:id])
+    client_or_programmer_required if @programmer.visibility == 'codedoor'
+  end
 
   # NOTE: user_id is immutable
   def update_programmer_params
