@@ -92,7 +92,7 @@ class ApplicationController < ActionController::Base
 
   # Redirect back to the page that forced the user to finish their account creation
   def client_signed_up_path
-    path_from_cookie(:after_account_signed_up_path) || path_from_cookie(:after_client_signed_up_path) || edit_user_client_path(current_user)
+    path_from_cookie(:after_account_signed_up_path) || path_from_cookie(:after_client_signed_up_path) || programmers_path
   end
 
   def programmer_signed_up_path

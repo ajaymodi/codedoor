@@ -30,7 +30,7 @@ describe ClientsController do
   describe 'POST create' do
     it 'should ignore the user_id parameter and create the client' do
       post :create, user_id: @user.id, client: {user_id: 'ignore', company: 'Test Company', description: 'Test Company Description'}
-      response.should redirect_to(edit_user_client_path(@user))
+      response.should redirect_to(programmers_path)
       client = Client.find_by_user_id(@user.id)
       flash[:notice].should eq('Your client account has been created.')
       client.user_id.should eq(@user.id)
