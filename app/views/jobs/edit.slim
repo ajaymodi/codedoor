@@ -14,6 +14,10 @@
       p
         = text_area_tag 'job_message[content]', @job_message.present? ? @job_message.content : '', class: 'span6 longer-text'
     .offset1.span6
+      - if @job.has_not_started?
+        .pull-right
+          = f.submit 'Send and Offer Contract', class: 'btn btn-success', data: {disable_with: 'Submitting...'}
       p
         = f.submit 'Send Message', class: 'btn', data: {disable_with: 'Submitting...'}
+
   = render partial: 'jobs/job_info'
