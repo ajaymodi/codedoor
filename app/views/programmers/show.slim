@@ -24,7 +24,7 @@
       h4
         | Description
       p
-        = simple_format(@programmer.description)
+        = auto_link(simple_format(@programmer.description), html: { target: "_blank" })
 
     - if @programmer.show_repos? || @programmer.show_portfolio?
       h4
@@ -74,7 +74,8 @@
               .span6
                 = link_to project.title, project.url, target: '_blank'
                 - unless project.description.blank?
-                  = simple_format(project.description)
+                  = auto_link(simple_format(project.description), html: { target: "_blank" })
+
 
     - if @programmer.show_resume?
       h4
@@ -88,7 +89,7 @@
           br
           = resume.duration_text
           br
-          = simple_format(resume.description)
+          = auto_link(simple_format(resume.description), html: { target: "_blank" })
 
     - if @programmer.show_education?
       h4
@@ -102,7 +103,7 @@
           br
           = education.duration_text
           br
-          = simple_format(education.description)
+          = auto_link(simple_format(education.description), html: { target: "_blank" })
   .span3
     - unless @programmer.user == current_user
       strong

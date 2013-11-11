@@ -72,6 +72,8 @@ gem 'newrelic_rpm'
 
 gem 'sitemap_generator', '~> 4.2.0'
 
+gem 'rails_autolink', '~> 1.1.5'
+
 # Interacting with AWS
 gem 'fog', '~> 1.18.0'
 
