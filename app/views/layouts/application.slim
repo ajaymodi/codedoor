@@ -2,9 +2,12 @@ doctype html
 html
   head
     - if user_signed_in?
-      title CodeDoor | Hire Open Source Contributors
+      title CodeDoor | Hire Open Source Programmers
+    - elsif @custom_title.present?
+      title
+        = @custom_title
     - else
-      title Programming Jobs | Hire Open Source Contributors | CodeDoor
+      title Programming Jobs | Hire Open Source Programmers | CodeDoor
     = favicon_link_tag 'favicon.ico'
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true

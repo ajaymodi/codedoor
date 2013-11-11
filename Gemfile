@@ -70,6 +70,8 @@ gem 'google-analytics-rails', '~> 0.0.4'
 
 gem 'newrelic_rpm'
 
+gem 'sitemap_generator', '~> 4.2.0'
+
 group :development, :test do
   gem 'pry'
   gem 'pry-debugger'

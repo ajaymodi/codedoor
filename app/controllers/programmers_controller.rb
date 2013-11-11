@@ -7,6 +7,11 @@ class ProgrammersController < ApplicationController
   def index
     @programmer_search = ProgrammerSearch.new(params, user_signed_in?)
     @programmers = @programmer_search.programmers
+
+    # SEO Hack
+    if !user_signed_in? && params[:skill_name].present?
+      @custom_title = "Programming Jobs | Hire #{params[:skill_name]} Open Source Programmers | CodeDoor"
+    end
   end
 
   def show
