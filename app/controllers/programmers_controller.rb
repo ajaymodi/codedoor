@@ -10,7 +10,7 @@ class ProgrammersController < ApplicationController
 
     # SEO Hack
     if !user_signed_in? && params[:skill_name].present?
-      @custom_title = "Programming Jobs | Hire #{params[:skill_name]} Open Source Programmers | CodeDoor"
+      @custom_title = "Hire #{params[:skill_name]} Open Source Programmers"
     end
   end
 
@@ -20,6 +20,8 @@ class ProgrammersController < ApplicationController
       redirect_to edit_user_programmer_path(current_user)
     end
     @show_back_to_search = params[:search].present?
+
+    @custom_title = @programmer.user.full_name
   end
 
   # There are no new or create routes.  This way, loading the controller will load repos,

@@ -27,6 +27,6 @@ Codedoor::Application.routes.draw do
 
   get '/terms', to: 'legal#terms'
   get '/blog', to: 'blog#index'
-  get '/sitemap1.xml.gz', to: 'sitemaps#show'
+  get '/sitemap.xml.gz', to: 'sitemaps#show'
 
 end
