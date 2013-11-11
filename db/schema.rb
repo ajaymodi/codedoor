@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131109060245) do
+ActiveRecord::Schema.define(version: 20131111205312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,6 +134,7 @@ ActiveRecord::Schema.define(version: 20131109060245) do
     t.string   "calculated_availability"
     t.integer  "rank_score"
     t.float    "modified_rank_score"
+    t.string   "ohloh_username"
   end
 
   add_index "programmers", ["modified_rank_score"], name: "index_programmers_on_modified_rank_score", using: :btree

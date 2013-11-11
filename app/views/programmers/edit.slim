@@ -220,6 +220,13 @@
             .span1
             div id='contribution-message' class='verify-contribution-message'
 
+      .control-group
+        .control-label
+          | Ohloh account
+        .controls
+          = f.text_field :ohloh_username, placeholder: 'username for ohloh.com'
+          = render partial: 'shared/help_inline', locals: {model: @programmer, attribute: :ohloh_username}
+
       h4.span9.settings-header
         | Projects
 

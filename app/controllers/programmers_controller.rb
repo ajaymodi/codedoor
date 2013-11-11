@@ -103,7 +103,7 @@ class ProgrammersController < ApplicationController
 
   # NOTE: user_id is immutable
   def update_programmer_params
-    params.require(:programmer).permit(:title, :description, :rate, :availability, :client_can_visit, :onsite_status, :contract_to_hire, :visibility,
+    params.require(:programmer).permit(:title, :description, :rate, :availability, :client_can_visit, :onsite_status, :contract_to_hire, :visibility, :ohloh_username,
       {portfolio_items_attributes:
         [:title, :url, :description, :_destroy, :id],
        resume_items_attributes:

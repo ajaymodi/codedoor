@@ -26,7 +26,7 @@
       p
         = auto_link(simple_format(@programmer.description), html: { target: "_blank" })
 
-    - if @programmer.show_repos? || @programmer.show_portfolio?
+    - if @programmer.show_repos? || @programmer.ohloh_username.present? || @programmer.show_portfolio?
       h4
         | Portfolio
       - if @programmer.show_repos?
@@ -64,6 +64,12 @@
                 .row
                   .span6
                     = repo.description
+
+      - if @programmer.ohloh_username.present?
+        strong
+          | Ohloh Account
+        p
+          = link_to @programmer.ohloh_username, "http://www.ohloh.net/accounts/#{@programmer.ohloh_username}", target: '_blank'
 
       - if @programmer.show_portfolio?
         strong

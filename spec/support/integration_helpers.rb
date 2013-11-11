@@ -32,6 +32,7 @@ module FeatureTestHelper
       fill_in 'Title', with: 'Test Title'
       fill_in 'Description', with: 'Test Description'
       fill_in 'hourly_rate_to_programmer', with: 100
+      find('#programmer_ohloh_username').set('ohloh-account-username')
 
       check('Android')
 

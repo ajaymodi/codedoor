@@ -11,6 +11,8 @@ feature 'Programmer settings', js: true do
     page.should have_content 'Full-time'
     page.should have_content 'Work can be done at a client\'s office if it is nearby.'
     page.should have_content 'Skills: Android'
+    page.should have_content 'Ohloh Account'
+    page.should have_content 'ohloh-account-username'
 
     click_link 'Settings'
     page.should_not have_content 'By checking this box, I agree to abide by CodeDoor\'s Terms of Use.'
