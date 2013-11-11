@@ -72,6 +72,9 @@ gem 'newrelic_rpm'
 
 gem 'sitemap_generator', '~> 4.2.0'
 
+# Interacting with AWS
+gem 'fog', '~> 1.18.0'
+
 group :development, :test do
   gem 'pry'
   gem 'pry-debugger'
