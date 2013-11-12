@@ -47,10 +47,10 @@ When a user clicks on "Create Programmer Account", a programmer model is made.  
 
 Some routes might ensure that the user has the proper prerequisites before visiting the page
 
-ensure_user_checked_terms
-client_required
-programmer_required
-client_or_programmer_required
+* ensure_user_checked_terms
+* client_required
+* programmer_required
+* client_or_programmer_required
 
 If the user does not have the proper state, then a cookie is created with the path.  After the user checks the terms of service, creates a client account, or creates a programmer account, the user is redirected if a cookie is present.
 
