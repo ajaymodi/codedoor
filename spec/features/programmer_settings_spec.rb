@@ -110,7 +110,7 @@ feature 'Programmer settings', js: true do
     click_link 'Add'
 
     page.should have_content 'Your contributions to test-repo-owner/test-repo-name have been added.'
-    page.text.should match(/test-repo-owner\/test-repo-name.*1 star.*(fork)/)
+    page.text.should match(/test-repo-owner\/test-repo-name.*1 star.*5 commits/)
 
     find('#shown-github-1').checked?.should be_true
     find('#shown-github-1').set(false)
