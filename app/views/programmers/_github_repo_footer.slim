@@ -1,7 +1,7 @@
 em.muted
   - if repo.contributions.present?
     = pluralize(repo.contributions, 'commit')
-  - elsif (repo.repo_owner == current_user.github_account.username) && !repo.is_fork?
+  - elsif (repo.repo_owner == repo.programmer.user.github_account.username) && !repo.is_fork?
     | Repo Founder
   - elsif repo.is_fork?
     | Fork

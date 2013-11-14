@@ -1,5 +1,5 @@
 .span4
   - repo_text = "#{repo.repo_owner}/#{repo.repo_name}"
-  = repo_commits_link(current_user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
+  = repo_commits_link(repo.programmer.user.github_account.username, repo.repo_owner, repo.repo_name, repo_text)
 .span2
   = pluralize(repo.stars_count, 'star')
