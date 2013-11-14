@@ -8,8 +8,6 @@ p
   .row
     .span6
       = repo.description
-  - if repo.contributions.present?
-    .row
-      .span6
-        em.muted
-          = pluralize(repo.contributions, 'commit')
+  .row
+    .span6
+      = render partial: 'programmers/github_repo_footer', locals: {repo: repo}
