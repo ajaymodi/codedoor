@@ -1,5 +1,5 @@
 class GithubRepo < ActiveRecord::Base
-  SHOWN = 12
+  SHOWN = 6
 
   default_scope { order('shown DESC, stars_count DESC') }
 
