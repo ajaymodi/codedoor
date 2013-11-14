@@ -1,6 +1,6 @@
 Dear <%= @user.full_name %>,
 
-<%= @other_user.full_name %> has sent you a message:
+<%= @other_user.full_name %> has sent you a message<%= @job_started ? ' and offered you a contract' : '' %>:
 
 <%= @message.content %>
 

@@ -12,13 +12,9 @@
         | Message
       .controls
         = text_area_tag 'job[job_messages_attributes][][content]', @job.job_messages.first.present? ? @job.job_messages.first.content : '', class: 'span5 longer-text'
-    .control-group
-      .controls
+    .offset2.span5
+      .pull-right
+        = f.submit 'Send and Offer Contract', class: 'btn btn-success', name: 'offer-contract', data: {disable_with: 'Submitting...'}
+      p
         = f.submit 'Send Message', class: 'btn', data: {disable_with: 'Submitting...'}
-    .control-group
-      .controls
-        p
-          | By sending a message, you are only starting an exploratory conversation with the programmer.
-        p
-          | After you have decided to proceed in hire the programmer, you can click the "Offer Contract" button on the right.
   = render partial: 'jobs/job_info'

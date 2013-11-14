@@ -29,13 +29,15 @@ class JobsController < ApplicationController
     @job.rate = @programmer.rate
     @job.availability = @programmer.availability
     @job.job_messages.first.sender_is_client = true if @job.job_messages.present?
+    job_offered = offer_job_with_message(@job)
+
     authorize! :create, @job
     if @job.save
-      UserMailer.message_sent(@job.other_user(current_user), @job, @job.job_messages.first, current_user).deliver
-      flash[:notice] = 'Your message has been sent.'
+      UserMailer.message_sent(@job.other_user(current_user), @job, @job.job_messages.first, current_user, job_offered).deliver
+      flash[:notice] = job_offered ? 'The job has been offered.' : 'Your message has been sent.'
       redirect_to edit_job_path(@job)
     else
-      flash[:alert] = 'Your message could not be sent.'
+      flash[:alert] = job_offered ? 'The job could not be offered.' : 'Your message could not be sent.'
       render :new
     end
   end
@@ -49,13 +51,14 @@ class JobsController < ApplicationController
     authorize! :update, @job
     @programmer = @job.programmer
     @job_message = JobMessage.new(create_message_params)
-    @job_message.job = @job
     @job_message.sender_is_client = @job.is_client?(current_user)
-    if @job_message.save
-      UserMailer.message_sent(@job.other_user(current_user), @job, @job_message, current_user).deliver
-      flash[:notice] = 'Your message has been sent.'
+    @job.job_messages << @job_message
+    job_offered = offer_job_with_message(@job)
+    if @job.save
+      UserMailer.message_sent(@job.other_user(current_user), @job, @job_message, current_user, job_offered).deliver
+      flash[:notice] = job_offered ? 'The job has been offered.' : 'Your message has been sent.'
     else
-      flash[:alert] = 'Your message could not be sent.'
+      flash[:alert] = job_offered ? 'The job could not be offered.' : 'Your message could not be sent.'
     end
     redirect_to action: :edit
   end
@@ -82,6 +85,15 @@ class JobsController < ApplicationController
   end
 
   private
+
+  def offer_job_with_message(job)
+    if params[:'offer-contract'].present? && job.has_not_started? && job.is_client?(current_user)
+      job.state = 'offered'
+      job.started_at = Time.now
+      return true
+    end
+    false
+  end
 
   def state_change(permission_required, state_required, action, action_name, success_message, failure_message)
     @job = Job.find(params[:id])

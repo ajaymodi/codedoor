@@ -16,7 +16,7 @@
     .offset1.span6
       - if @job.has_not_started?
         .pull-right
-          = f.submit 'Send and Offer Contract', class: 'btn btn-success', data: {disable_with: 'Submitting...'}
+          = f.submit 'Send and Offer Contract', class: 'btn btn-success', name: 'offer-contract', data: {disable_with: 'Submitting...'}
       p
         = f.submit 'Send Message', class: 'btn', data: {disable_with: 'Submitting...'}
 

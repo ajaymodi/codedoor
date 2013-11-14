@@ -79,9 +79,19 @@ describe JobsController do
       post :create, job: {programmer_id: @programmer.id, name: 'Test job', job_messages_attributes: [{content: 'Test message'}]}
       response.should redirect_to(edit_job_path(Job.last.id))
       job = Job.last
+      job.state.should eq('has_not_started')
       job.name.should eq('Test job')
       job.job_messages.first.sender_is_client.should be_true
       job.job_messages.first.content.should eq('Test message')
+      flash[:notice].should eq('Your message has been sent.')
+    end
+
+    it 'should offer job if "Send and Offer Contract" button is clicked' do
+      sign_in(@client.user)
+      post :create, :'offer-contract' => 'Send and Offer Contract', job: {programmer_id: @programmer.id, name: 'Test job', job_messages_attributes: [{content: 'Test message'}]}
+      job = Job.last
+      job.state.should eq('offered')
+      flash[:notice].should eq('The job has been offered.')
     end
 
     it 'should display proper message upon fail' do
@@ -122,6 +132,31 @@ describe JobsController do
       response.should redirect_to(edit_job_path(job))
       flash[:notice].should eq('Your message has been sent.')
       job.reload.job_messages.first.content.should eq('Test Message')
+    end
+
+    it 'should start job if "Send and Offer Contract" button is clicked' do
+      sign_in(@client.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'has_not_started')
+      post :create_message, id: job.id, :'offer-contract' => 'Send and Offer Contract', job_message: {content: 'Test Message'}
+      job = Job.last
+      job.state.should eq('offered')
+      flash[:notice].should eq('The job has been offered.')
+    end
+
+    it 'should not start job if "Send and Offer Contract" button is clicked by programmer' do
+      sign_in(@programmer.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'has_not_started')
+      post :create_message, id: job.id, :'offer-contract' => 'Send and Offer Contract', job_message: {content: 'Test Message'}
+      job = Job.last
+      job.state.should eq('has_not_started')
+    end
+
+    it 'should not start job if "Send and Offer Contract" button is clicked and the job is already running' do
+      sign_in(@client.user)
+      job = FactoryGirl.create(:job, client: @client, programmer: @programmer, state: 'running')
+      post :create_message, id: job.id, :'offer-contract' => 'Send and Offer Contract', job_message: {content: 'Test Message'}
+      job = Job.last
+      job.state.should eq('running')
     end
 
     it 'should allow the programmer to add a message' do

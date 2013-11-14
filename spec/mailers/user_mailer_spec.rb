@@ -30,7 +30,7 @@ describe UserMailer do
     let(:job) { mock_model(Job, id: 123) }
     let(:message) { mock_model(JobMessage, content: 'Test Content') }
     let(:other_user) { mock_model(User, full_name: 'Other User', email: 'other-user@example.com') }
-    let(:mail) { UserMailer.message_sent(user, job, message, other_user) }
+    let(:mail) { UserMailer.message_sent(user, job, message, other_user, false) }
 
     it 'renders the subject' do
       mail.subject.should eq('Message from Other User')
@@ -47,6 +47,33 @@ describe UserMailer do
     it 'renders the body' do
       mail.body.encoded.should match('Dear John Smith,')
       mail.body.encoded.should match('Other User has sent you a message:')
+      mail.body.encoded.should match('Test Content')
+      mail.body.encoded.should match('To reply to Other User, visit https://www.codedoor.com/jobs/123/edit')
+      mail.body.encoded.should match('-The CodeDoor Team')
+    end
+  end
+
+  describe 'message_sent with job offered' do
+    let(:job) { mock_model(Job, id: 123) }
+    let(:message) { mock_model(JobMessage, content: 'Test Content') }
+    let(:other_user) { mock_model(User, full_name: 'Other User', email: 'other-user@example.com') }
+    let(:mail) { UserMailer.message_sent(user, job, message, other_user, true) }
+
+    it 'renders the subject' do
+      mail.subject.should eq('Contract offered from Other User')
+    end
+
+    it 'renders the receiver email' do
+      mail.to.should eq([user.email])
+    end
+
+    it 'renders the sender email' do
+      mail.from.should eq(['rcheng@codedoor.com'])
+    end
+
+    it 'renders the body' do
+      mail.body.encoded.should match('Dear John Smith,')
+      mail.body.encoded.should match('Other User has sent you a message and offered you a contract:')
       mail.body.encoded.should match('Test Content')
       mail.body.encoded.should match('To reply to Other User, visit https://www.codedoor.com/jobs/123/edit')
       mail.body.encoded.should match('-The CodeDoor Team')

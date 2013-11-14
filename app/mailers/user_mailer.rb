@@ -7,12 +7,16 @@ class UserMailer < ActionMailer::Base
     mail(to: @user.email, subject: 'Welcome to CodeDoor')
   end
 
-  def message_sent(user, job, message, other_user)
+  def message_sent(user, job, message, other_user, job_started)
     @user = user
     @job = job
     @message = message
     @other_user = other_user
-    mail(to: @user.email, subject: "Message from #{@other_user.full_name}")
+    @job_started = job_started
+
+    message = job_started ? "Contract offered from #{@other_user.full_name}" : "Message from #{@other_user.full_name}"
+
+    mail(to: @user.email, subject: message)
   end
 
   def state_occurred_to_job(user, job, other_user, action_name)
