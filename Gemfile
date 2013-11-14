@@ -77,6 +77,10 @@ gem 'rails_autolink', '~> 1.1.5'
 # Interacting with AWS
 gem 'fog', '~> 1.18.0'
 
+group :development do
+  gem 'bullet'
+end
+
 group :development, :test do
   gem 'pry'
   gem 'pry-debugger'

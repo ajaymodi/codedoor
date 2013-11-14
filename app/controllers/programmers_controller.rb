@@ -6,7 +6,7 @@ class ProgrammersController < ApplicationController
 
   def index
     @programmer_search = ProgrammerSearch.new(params, user_signed_in?)
-    @programmers = @programmer_search.programmers
+    @programmers = @programmer_search.programmers.includes(:user)
 
     # SEO Hack
     if !user_signed_in? && params[:skill_name].present?
@@ -79,7 +79,7 @@ class ProgrammersController < ApplicationController
     end
     if repo.present?
       response[:success] = "Your contributions to #{repo_owner}/#{repo_name} have been added."
-      response[:html] = render_to_string(partial: 'programmers/edit_github_repo', locals: {repo: repo, index: (current_user.programmer.github_repos.count - 1), serverside: true})
+      response[:html] = render_to_string(partial: 'programmers/edit_github_repo', locals: {repo: repo, index: (current_user.programmer.github_repos.count - 1), programmer: current_user.programmer, serverside: true})
       respond_to do |format|
         format.json {
           render json: response.to_json

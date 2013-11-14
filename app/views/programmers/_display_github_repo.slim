@@ -1,9 +1,9 @@
 p
   .row
-    = render partial: 'programmers/github_repo_header', locals: {repo: repo}
+    = render partial: 'programmers/github_repo_header', locals: {repo: repo, programmer: programmer}
   .row
     .span6
       = repo.description
   .row
     .span6
-      = render partial: 'programmers/github_repo_footer', locals: {repo: repo}
+      = render partial: 'programmers/github_repo_footer', locals: {repo: repo, programmer: programmer}

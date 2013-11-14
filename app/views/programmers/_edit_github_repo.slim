@@ -5,13 +5,13 @@
         - checkbox_name = "programmer[github_repos_attributes][#{index}][shown]"
         = hidden_field_tag(checkbox_name, '0', id: nil)
         = check_box_tag(checkbox_name, '1', repo.shown?, id: "shown-github-#{repo.id}")
-    = render partial: 'programmers/github_repo_header', locals: {repo: repo}
+    = render partial: 'programmers/github_repo_header', locals: {repo: repo, programmer: programmer}
   .row
     .offset3.span6
       = repo.description
   .row
     .offset3.span6
-      = render partial: 'programmers/github_repo_footer', locals: {repo: repo}
+      = render partial: 'programmers/github_repo_footer', locals: {repo: repo, programmer: programmer}
 
 - if serverside
   = hidden_field_tag("programmer[github_repos_attributes][#{index}][id]", repo.id.to_s)
