@@ -34,16 +34,8 @@
           | GitHub&nbsp;/&nbsp;
         = link_to @programmer.username, "https://github.com/#{@programmer.username}", target: '_blank'
         - @programmer.github_repos.shown[0..(GithubRepo::SHOWN-1)].each do |repo|
-          p
-            .row
-              .span4
-                - repo_text = "#{repo.repo_owner}/#{repo.repo_name}"
-                = repo_commits_link(@programmer.username, repo.repo_owner, repo.repo_name, repo_text)
-              .span2
-                = "#{pluralize(repo.stars_count, 'star')} #{repo.is_fork? ? '(fork)' : ''}"
-            .row
-              .span6
-                = repo.description
+          = render partial: 'programmers/display_github_repo', locals: {programmer: @programmer, repo: repo}
+
         - if @programmer.github_repos.shown.size > GithubRepo::SHOWN
           p
             strong
@@ -54,16 +46,7 @@
 
           #hidden-repos.hidden
             - @programmer.github_repos.shown[(GithubRepo::SHOWN)..(-1)].each do |repo|
-              p
-                .row
-                  .span4
-                    - repo_text = "#{repo.repo_owner}/#{repo.repo_name}"
-                    = repo_commits_link(@programmer.username, repo.repo_owner, repo.repo_name, repo_text)
-                  .span2
-                    = "#{pluralize(repo.stars_count, 'star')} #{repo.is_fork? ? '(fork)' : ''}"
-                .row
-                  .span6
-                    = repo.description
+              = render partial: 'programmers/display_github_repo', locals: {programmer: @programmer, repo: repo}
 
       - if @programmer.ohloh_username.present?
         strong

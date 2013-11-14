@@ -1,0 +1,15 @@
+p
+  .row
+    .span4
+      - repo_text = "#{repo.repo_owner}/#{repo.repo_name}"
+      = repo_commits_link(programmer.username, repo.repo_owner, repo.repo_name, repo_text)
+    .span2
+      = "#{pluralize(repo.stars_count, 'star')} #{repo.is_fork? ? '(fork)' : ''}"
+  .row
+    .span6
+      = repo.description
+  - if repo.contributions.present?
+    .row
+      .span6
+        em.muted
+          = pluralize(repo.contributions, 'commit')

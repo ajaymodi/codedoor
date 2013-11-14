@@ -13,5 +13,10 @@
   .row
     .offset3.span6
       = repo.description.to_s.truncate(120)
+  - if repo.contributions.present?
+    .row
+      .offset3.span6
+        em.muted
+          = pluralize(repo.contributions, 'commit')
 - if serverside
   = hidden_field_tag("programmer[github_repos_attributes][#{index}][id]", repo.id.to_s)

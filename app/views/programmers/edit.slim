@@ -193,7 +193,7 @@
         - index = 0
         = f.fields_for :github_repos do |github_form|
           - repo = github_form.object
-          = render partial: 'programmers/github_repo', locals: {repo: repo, index: index, serverside: false}
+          = render partial: 'programmers/edit_github_repo', locals: {repo: repo, index: index, serverside: false}
           - index += 1
 
       .control-group
