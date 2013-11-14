@@ -167,21 +167,18 @@
       h2.span9
         | Portfolio
 
-      .control-group.portfolio-info
-        .control-label
-        .controls
-          - if @programmer.qualified?
-            .alert.alert-notice
-              p
-                | You have contributed to popular open-source repositories.
-          - else
-            .alert.alert-error
-              p
-                | Contractors on CodeDoor need at least one open-source contribution to a public repository with at least 25 stars.  Add your contributions to repositories below.
-              p
-                | If you've contributed to a major open-source project that isn't on GitHub, please send an email to:&nbsp;
-                a href="mailto:rcheng@codedoor.com"
-                  | rcheng@codedoor.com
+      - if @programmer.qualified?
+        .alert.alert-notice.settings-alert
+          p
+            | You have contributed to popular open-source repositories.
+      - else
+        .alert.alert-error.settings-alert
+          p
+            | Contractors on CodeDoor need at least one open-source contribution to a public repository with at least 25 stars.  Add your contributions to repositories below.
+          p
+            | If you've contributed to a major open-source project that isn't on GitHub, please send an email to:&nbsp;
+            a href="mailto:rcheng@codedoor.com"
+              | rcheng@codedoor.com
 
       h4.span9.settings-header
         | Repositories
@@ -252,6 +249,11 @@
 
         = portfolio_form.link_to_remove 'Remove project'
 
+      - if @programmer.portfolio_items.empty?
+        .alert.alert-notice.settings-alert
+          p
+            | Please add any projects you have created.
+
       = f.link_to_add 'Add project', :portfolio_items
 
       h2.span9.settings-header
@@ -280,6 +282,11 @@
 
         = resume_form.link_to_remove 'Remove from résumé'
 
+      - if @programmer.resume_items.empty?
+        .alert.alert-notice.settings-alert
+          p
+            | Please enter your work history.
+
       = f.link_to_add 'Add to résumé', :resume_items
 
       h2.span9.settings-header
@@ -307,6 +314,11 @@
         = render partial: 'programmers/date', locals: {form: edu_form, type: :education}
 
         = edu_form.link_to_remove 'Remove from education'
+
+      - if @programmer.education_items.empty?
+        .alert.alert-notice.settings-alert
+          p
+            | Please enter your educational history.
 
       = f.link_to_add 'Add to education', :education_items
 
