@@ -77,6 +77,8 @@ gem 'rails_autolink', '~> 1.1.5'
 # Interacting with AWS
 gem 'fog', '~> 1.18.0'
 
+gem 'rack-affiliates', '~> 0.2.0'
+
 group :development do
   gem 'bullet'
 end

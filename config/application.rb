@@ -22,5 +22,8 @@ module Codedoor
 
     config.autoload_paths += %W(#{config.root}/lib)
     config.action_controller.include_all_helpers = false
+
+    # If there is an affiliate code, it is listed in request.env['affiliate.tag']
+    config.middleware.use Rack::Affiliates
   end
 end

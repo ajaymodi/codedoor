@@ -114,7 +114,7 @@ describe User do
       email = "email#{rand}@example.com"
       auth = MockGitHubAuth.test_user
       auth[:info][:email] = email
-      user = User.find_for_github_oauth(auth)
+      user = User.find_for_github_oauth(auth, nil)
       user.full_name.should eq('Test User')
       user.email.should eq(email)
 
@@ -127,15 +127,31 @@ describe User do
     it 'should still create a new user if the user does not validate (they would just have to add it upon registration)' do
       auth = MockGitHubAuth.test_user
       auth[:info][:email] = ''
-      user = User.find_for_github_oauth(auth)
+      user = User.find_for_github_oauth(auth, nil)
       user.email.should eq('')
       user.valid?.should be_false
+    end
+
+    it 'should add referred_user_id to a user if the user id exists' do
+      referrer = FactoryGirl.create(:user)
+
+      auth = MockGitHubAuth.test_user
+      auth[:info][:email] = "email#{rand}@example.com"
+      user = User.find_for_github_oauth(auth, referrer.id.to_s)
+      user.referred_user.should eq(referrer)
+    end
+
+    it 'should not add referred_user_id to a user if the user id does not correspond to a user' do
+      auth = MockGitHubAuth.test_user
+      auth[:info][:email] = "email#{rand}@example.com"
+      user = User.find_for_github_oauth(auth, '1111111111')
+      user.referred_user.should be_nil
     end
 
     it 'should return user if the there is a UserAccount that matches' do
       user_account = FactoryGirl.create(:user_account, type: 'GithubUserAccount', account_id: 'existing account id')
       auth = OmniAuth::AuthHash.new({uid: 'existing account id'})
-      user_account.user.should eq(User.find_for_github_oauth(auth))
+      user_account.user.should eq(User.find_for_github_oauth(auth, nil))
     end
   end
 

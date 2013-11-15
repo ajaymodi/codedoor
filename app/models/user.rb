@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_one  :programmer, dependent: :destroy
   has_one  :client, dependent: :destroy
   has_one  :payment_info, dependent: :destroy
+  has_one  :referred_user, class_name: 'User', foreign_key: :id, primary_key: :referred_user_id
 
   validates :full_name, presence: true
   validates :country, presence: true, if: :checked_terms?
@@ -16,7 +17,7 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true, format: { with: /\A.*@.*\..*\z/ }
   validates :checked_terms, inclusion: { in: [true], on: :update, message: '- The Terms of Use must be accepted.' }
 
-  def self.find_for_github_oauth(auth, signed_in_resource=nil)
+  def self.find_for_github_oauth(auth, affiliate_tag)
     user_account = GithubUserAccount.where(account_id: auth.uid).first
 
     if user_account
@@ -27,6 +28,9 @@ class User < ActiveRecord::Base
         user.full_name = auth.extra.raw_info.name
         user.email = auth.info.email
         user.password = Devise.friendly_token[0, 20]
+        if affiliate_tag && User.where(id: affiliate_tag.to_i)
+          user.referred_user_id = affiliate_tag.to_i
+        end
         user.save(validate: false)
 
         user_account = GithubUserAccount.new
