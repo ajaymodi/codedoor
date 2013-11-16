@@ -10,7 +10,7 @@ class GithubRepo < ActiveRecord::Base
 
   validates :programmer_id, presence: true
   validates :repo_owner, presence: true
-  validates :repo_name, presence: true, uniqueness: {scope: :repo_owner}
+  validates :repo_name, presence: true, uniqueness: {scope: [:repo_owner, :programmer_id]}
   validates :default_branch, presence: true
 
   after_save :qualify_programmer

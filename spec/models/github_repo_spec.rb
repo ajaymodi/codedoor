@@ -6,7 +6,7 @@ describe GithubRepo do
     it { should validate_presence_of(:repo_owner) }
     it { should validate_presence_of(:repo_name) }
     it { should validate_presence_of(:default_branch) }
-    it { should validate_uniqueness_of(:repo_name).scoped_to(:repo_owner) }
+    it { should validate_uniqueness_of(:repo_name).scoped_to([:repo_owner, :programmer_id]) }
   end
 
   context 'default scope' do
