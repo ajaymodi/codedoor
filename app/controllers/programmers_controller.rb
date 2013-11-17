@@ -31,7 +31,7 @@ class ProgrammersController < ApplicationController
     if current_user.programmer.present?
       @programmer = current_user.programmer
     else
-      @programmer = Programmer.new(user_id: current_user.id, visibility: :public)
+      @programmer = Programmer.new(user_id: current_user.id)
       @programmer.save({validate: false})
     end
     current_user.github_account.load_repos if current_user.github_account.present?

@@ -37,6 +37,7 @@ module FeatureTestHelper
       check('Android')
 
       choose('Full-time')
+      choose('Public')
       choose('programmer_onsite_status_onsite')
       click_button 'Save'
     end
