@@ -121,4 +121,15 @@ feature 'Programmer settings', js: true do
 
     find('#shown-github-1').checked?.should be_false
   end
+
+  scenario 'Setting account as private', js: true do
+    programmer_sign_up
+    go_to_programmer_settings
+    choose('Private')
+    click_button 'Save'
+
+    go_to_programmer_settings
+
+    find('#programmer_visibility_private').checked?.should be_true
+  end
 end
