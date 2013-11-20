@@ -15,9 +15,18 @@ div class="navbar"
       - if current_user.completed_programmer_account? || current_user.client.present?
         a class="pull-left" href="#{jobs_path}"
           | Jobs
+      / Only show if if user is client and not programmer
+      - unless current_user.client.present? && !current_user.completed_programmer_account?
+        a class="pull-left" href="#{job_listings_path}"
+          | Find Work
+      - if current_user.client.present?
+        a class="pull-left" href="#{new_job_listing_path}"
+          | Create Job Listing
       a class="pull-right" href="#{edit_user_path(current_user)}"
         | Settings
     - else
+      a class="pull-left" href="#{job_listings_path}"
+        | Find Work
       a class="btn-auth btn-github pull-right" href="#{user_omniauth_authorize_path(:github)}"
         | Log in with GitHub
       a class="pull-right" href="#{new_user_session_path}"

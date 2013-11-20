@@ -5,7 +5,6 @@ describe Job do
     it { should validate_presence_of(:client_id) }
     it { should validate_presence_of(:programmer_id) }
     it { should validate_presence_of(:name) }
-    it { should validate_presence_of(:rate) }
 
     it 'should validate client_and_programmer_are_different' do
       user = FactoryGirl.create(:user)
@@ -18,17 +17,17 @@ describe Job do
     end
 
     it 'should validate rate_is_unchanged if the job is running' do
-      job = FactoryGirl.create(:job, rate: 55, state: 'running')
+      job = FactoryGirl.create(:job, hourly_rate: 55, state: 'running')
       job.valid?.should be_true
-      job.rate = 66
+      job.hourly_rate = 66
       job.valid?.should be_false
-      job.errors[:rate].should eq(['must stay the same for the job'])
+      job.errors[:hourly_rate].should eq(['must stay the same for the job'])
     end
 
     it 'should allow rate to change if the job has not been offered' do
-      job = FactoryGirl.create(:job, rate: 55, state: 'has_not_started')
+      job = FactoryGirl.create(:job, hourly_rate: 55, state: 'has_not_started')
       job.valid?.should be_true
-      job.rate = 66
+      job.hourly_rate = 66
       job.valid?.should be_true
     end
   end

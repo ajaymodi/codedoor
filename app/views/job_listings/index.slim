@@ -1,0 +1,8 @@
+h3
+  | Job Listings
+- if @job_listings.empty?
+  | There are currently no job listings available.
+- else
+  - @job_listings.each do |job_listing|
+    p
+      = link_to job_listing.title, job_listing_path(job_listing, search: true)

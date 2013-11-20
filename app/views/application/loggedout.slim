@@ -23,6 +23,12 @@
         select id='skill_name' name='skill_name'
           = options_for_select(Skill.all.map{|skill| [skill.name, skill.name]}.insert(0, 'Select Skill:'), params[:skill_name])
         = submit_tag 'Search', class: 'btn'
+.row
+  .create-job-listing
+    strong
+      ' Or Create A
+      a href="#{new_job_listing_path}"
+        | Job Listing
 
 .row
   .intro-explanation-header

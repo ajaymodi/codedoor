@@ -28,8 +28,8 @@ class ProgrammerSearch
 
     @min_rate = string_to_rate(params[:min_rate])
     @max_rate = string_to_rate(params[:max_rate])
-    @programmers = @programmers.where('rate >= ?', Programmer.client_rate_to_programmer_rate(@min_rate)) if @min_rate
-    @programmers = @programmers.where('rate <= ?', Programmer.client_rate_to_programmer_rate(@max_rate)) if @max_rate
+    @programmers = @programmers.where('hourly_rate >= ?', Programmer.client_rate_to_programmer_rate(@min_rate)) if @min_rate
+    @programmers = @programmers.where('hourly_rate <= ?', Programmer.client_rate_to_programmer_rate(@max_rate)) if @max_rate
 
     @contract_to_hire = params[:contract_to_hire].present?
     @programmers = @programmers.where('contract_to_hire = ?', true) if @contract_to_hire

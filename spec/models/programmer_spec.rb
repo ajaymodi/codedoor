@@ -14,13 +14,13 @@ describe Programmer do
     it { ensure_inclusion_only_of(Programmer, :onsite_status, ['offsite', 'occasional', 'visits_allowed', 'onsite'])}
 
     it 'should allow integer rates between 20 and 1000' do
-      FactoryGirl.build(:programmer, rate: 20).should be_valid
-      FactoryGirl.build(:programmer, rate: 1000).should be_valid
+      FactoryGirl.build(:programmer, hourly_rate: 20).should be_valid
+      FactoryGirl.build(:programmer, hourly_rate: 1000).should be_valid
 
-      FactoryGirl.build(:programmer, rate: 19).should_not be_valid
-      FactoryGirl.build(:programmer, rate: 1001).should_not be_valid
-      FactoryGirl.build(:programmer, rate: 20.5).should_not be_valid
-      FactoryGirl.build(:programmer, rate: nil).should_not be_valid
+      FactoryGirl.build(:programmer, hourly_rate: 19).should_not be_valid
+      FactoryGirl.build(:programmer, hourly_rate: 1001).should_not be_valid
+      FactoryGirl.build(:programmer, hourly_rate: 20.5).should_not be_valid
+      FactoryGirl.build(:programmer, hourly_rate: nil).should_not be_valid
     end
 
     it 'should require at least one skill' do
@@ -99,19 +99,19 @@ describe Programmer do
 
   context 'rates' do
     before :each do
-      @programmer = FactoryGirl.create(:programmer, rate: 51)
+      @programmer = FactoryGirl.create(:programmer, hourly_rate: 51)
     end
 
     it 'should return the correct daily rate for the programmer' do
-      @programmer.daily_rate_to_programmer.should eq(@programmer.rate * 8)
+      @programmer.daily_rate_to_programmer.should eq(@programmer.hourly_rate * 8)
     end
 
     it 'should return the correct daily rate for the client' do
-      @programmer.daily_rate_to_client.should eq(@programmer.rate * 9)
+      @programmer.daily_rate_to_client.should eq(@programmer.hourly_rate * 9)
     end
 
     it 'should return the correct daily fee for CodeDoor' do
-      @programmer.daily_fee_to_codedoor.should eq(@programmer.rate)
+      @programmer.daily_fee_to_codedoor.should eq(@programmer.hourly_rate)
     end
 
     it 'should return the correct hourly rate for the client' do
@@ -127,7 +127,7 @@ describe Programmer do
     end
 
     it 'should return nil when rate is nil' do
-      new_programmer = Programmer.new(rate: nil)
+      new_programmer = Programmer.new(hourly_rate: nil)
 
       new_programmer.daily_rate_to_programmer.should be_nil
       new_programmer.daily_rate_to_client.should be_nil

@@ -26,44 +26,44 @@ describe ApplicationHelper do
 
   context 'client_rate_text' do
     it 'should show rate for full-time programmers' do
-      programmer = FactoryGirl.create(:programmer, availability: 'full-time', rate: 100)
+      programmer = FactoryGirl.create(:programmer, availability: 'full-time', hourly_rate: 100)
       client_rate_text(programmer).should eq('$900 / day')
     end
 
     it 'should show rate for part-time programmers' do
-      programmer = FactoryGirl.create(:programmer, availability: 'part-time', rate: 100)
+      programmer = FactoryGirl.create(:programmer, availability: 'part-time', hourly_rate: 100)
       client_rate_text(programmer).should eq('$112.50 / hour')
     end
 
     it 'should show rate for jobs' do
-      job = FactoryGirl.create(:job, availability: 'part-time', rate: 100)
+      job = FactoryGirl.create(:job, availability: 'part-time', hourly_rate: 100)
       client_rate_text(job).should eq('$112.50 / hour')
     end
 
     it 'should not show rate for unavailable programmers' do
-      programmer = FactoryGirl.create(:programmer, availability: 'unavailable', rate: 100)
+      programmer = FactoryGirl.create(:programmer, availability: 'unavailable', hourly_rate: 100)
       client_rate_text(programmer).should eq('Unavailable')
     end
   end
 
   context 'programmer_rate_text' do
     it 'should show rate for full-time programmers' do
-      programmer = FactoryGirl.create(:programmer, availability: 'full-time', rate: 50)
+      programmer = FactoryGirl.create(:programmer, availability: 'full-time', hourly_rate: 50)
       programmer_rate_text(programmer).should eq('$400 / day')
     end
 
     it 'should show rate for part-time programmers' do
-      programmer = FactoryGirl.create(:programmer, availability: 'part-time', rate: 50)
+      programmer = FactoryGirl.create(:programmer, availability: 'part-time', hourly_rate: 50)
       programmer_rate_text(programmer).should eq('$50 / hour')
     end
 
     it 'should show rate for jobs' do
-      job = FactoryGirl.create(:job, availability: 'part-time', rate: 50)
+      job = FactoryGirl.create(:job, availability: 'part-time', hourly_rate: 50)
       programmer_rate_text(job).should eq('$50 / hour')
     end
 
     it 'should not show rate for unavailable programmers' do
-      programmer = FactoryGirl.create(:programmer, availability: 'unavailable', rate: 50)
+      programmer = FactoryGirl.create(:programmer, availability: 'unavailable', hourly_rate: 50)
       programmer_rate_text(programmer).should eq('Unavailable')
     end
   end

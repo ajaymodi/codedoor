@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131115055054) do
+ActiveRecord::Schema.define(version: 20131130080408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,23 @@ ActiveRecord::Schema.define(version: 20131115055054) do
 
   add_index "job_days", ["job_id"], name: "index_job_days_on_job_id", using: :btree
 
+  create_table "job_listings", force: true do |t|
+    t.string   "title"
+    t.string   "description"
+    t.integer  "client_id"
+    t.integer  "min_hours_per_week"
+    t.integer  "max_hours_per_week"
+    t.string   "visibility"
+    t.integer  "suggested_fixed_rate"
+    t.string   "suggested_rate_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.date     "delivery_date"
+    t.integer  "min_hourly_rate"
+    t.integer  "max_hourly_rate"
+    t.boolean  "ended"
+  end
+
   create_table "job_messages", force: true do |t|
     t.integer  "job_id"
     t.boolean  "sender_is_client"
@@ -86,13 +103,17 @@ ActiveRecord::Schema.define(version: 20131115055054) do
     t.integer  "programmer_id"
     t.integer  "client_id"
     t.string   "state"
-    t.integer  "rate"
+    t.integer  "hourly_rate"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "availability"
     t.datetime "started_at"
     t.datetime "finished_at"
+    t.string   "rate_type"
+    t.integer  "fixed_rate"
+    t.integer  "job_listing_id"
+    t.string   "type"
   end
 
   add_index "jobs", ["client_id"], name: "index_jobs_on_client_id", using: :btree
@@ -122,7 +143,7 @@ ActiveRecord::Schema.define(version: 20131115055054) do
     t.integer  "user_id"
     t.string   "title"
     t.text     "description"
-    t.integer  "rate"
+    t.integer  "hourly_rate"
     t.string   "availability"
     t.datetime "created_at"
     t.datetime "updated_at"

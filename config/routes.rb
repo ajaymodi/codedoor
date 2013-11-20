@@ -6,6 +6,9 @@ Codedoor::Application.routes.draw do
   resources :programmers, only: [:index, :show]
 
   resources :jobs, only: [:index, :new, :create, :edit] do
+    get :new_application, on: :new
+    post :create_application, on: :new
+
     post :create_message, on: :member
     post :cancel, on: :member
     post :offer, on: :member
@@ -13,6 +16,8 @@ Codedoor::Application.routes.draw do
     post :start, on: :member
     post :finish, on: :member
   end
+
+  resources :job_listings, only: [:index, :show, :new, :edit, :create, :update]
 
   resources :users, only: [:edit, :update] do
     resource :programmer, only: [:edit, :update] do

@@ -1,0 +1,68 @@
+= form_for [@job], url: {action: :create_application}, html: {class: 'form-horizontal'} do |f|
+  .span8
+    = f.hidden_field :job_listing_id, value: @job_listing.id
+    .control-group
+      .control-label
+      .controls
+        = @job_listing.title
+    .control-group
+      .control-label
+        | Message
+      .controls
+        = text_area_tag 'job[job_messages_attributes][][content]', @job.job_messages.first.present? ? @job.job_messages.first.content : '', class: 'span5 longer-text'
+    .control-group
+      .control-label
+        | Rate Type
+      .controls
+        label class='radio'
+          = f.radio_button :rate_type, :hourly
+          | Hourly or daily rate
+        label class='radio'
+          = f.radio_button :rate_type, :fixed_price
+          | Fixed price for project
+
+    span id='hourly_rate_fields' class="#{@job.hourly? ? '' : 'hidden'}"
+      .control-group class="#{model_attribute_class(@job, :hourly_rate)}"
+        .control-label
+          = f.label :hourly_rate, 'Rate Per Hour'
+        .controls
+          ' $
+          = f.text_field :hourly_rate, class: 'short-field'
+          = render partial: 'shared/help_inline', locals: {model: @job, attribute: :hourly_rate}
+
+    span id='fixed_rate_fields' class="#{@job.fixed_price? ? '' : 'hidden'}"
+      .control-group class="#{model_attribute_class(@job, :fixed_rate)}"
+        .control-label
+          = f.label :fixed_rate, 'Rate For Project'
+        .controls
+          ' $
+          = f.text_field :fixed_rate, class: 'short-field'
+          = render partial: 'shared/help_inline', locals: {model: @job, attribute: :fixed_rate}
+
+    javascript:
+      $('document').ready(function() {
+        var refreshFields = function() {
+          current_rate_type = $("input[name='job[rate_type]']:checked").val();
+          if (current_rate_type == 'hourly') {
+            $('#hourly_rate_fields').show();
+            $('#fixed_rate_fields').hide();
+          } else if (current_rate_type == 'fixed_price') {
+            $('#hourly_rate_fields').hide();
+            $('#fixed_rate_fields').show();
+          } else {
+            $('#hourly_rate_fields').hide();
+            $('#fixed_rate_fields').hide();
+          }
+        };
+
+        $('#job_rate_type_hourly').on('click', refreshFields);
+        $('#job_rate_type_fixed_price').on('click', refreshFields);
+        refreshFields();
+      });
+
+    .offset2.span5
+      .pull-right
+        = f.submit 'Send and Offer Bid', class: 'btn btn-success', name: 'offer-contract', data: {disable_with: 'Submitting...'}
+      p
+        = f.submit 'Send Message', class: 'btn', data: {disable_with: 'Submitting...'}
+  = render partial: 'jobs/job_info'

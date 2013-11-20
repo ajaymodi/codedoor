@@ -1,0 +1,114 @@
+= form_for [@job_listing], url: {action: action}, html: {class: 'form-horizontal'} do |f|
+  .span8
+    .control-group class="#{model_attribute_class(@job_listing, :title)}"
+      .control-label
+        = f.label :title, 'Job Title'
+      .controls
+        = f.text_field :title, placeholder: 'Job Name'
+        = render partial: 'shared/help_inline', locals: {model: @job_listing, attribute: :title}
+    .control-group class="#{model_attribute_class(@job_listing, :description)}"
+      .control-label
+        = f.label :description, 'Description'
+      .controls
+        = render partial: 'shared/help_block', locals: {model: @job_listing, attribute: :description}
+        = f.text_area :description, placeholder: 'A description of the job.', class: 'span6 longer-text'
+
+    .control-group class="#{model_attribute_class(@job_listing, :suggested_rate_type)}"
+      .control-label
+        = f.label :suggested_rate_type, 'Job Type'
+      .controls
+        = render partial: 'shared/help_block', locals: {model: @job_listing, attribute: :suggested_rate_type}
+        label class='radio'
+          = f.radio_button :suggested_rate_type, :hourly
+          | Hourly or daily rate
+        label class='radio'
+          = f.radio_button :suggested_rate_type, :fixed_price
+          | Fixed price for project
+
+    .control-group class="#{model_attribute_class(@job_listing, :visibility)}"
+      .control-label
+        = f.label :visibility
+      .controls
+        = render partial: 'shared/help_block', locals: {model: @job_listing, attribute: :visibility}
+        label class='radio'
+          = f.radio_button :visibility, :public
+          | Public (Visible to search engines)
+        label class='radio'
+          = f.radio_button :visibility, :codedoor
+          | Visible to other CodeDoor users
+
+    / Hourly rate fields
+    - hours_hash = (1..40).inject({}){|y, x| y[x] = x; y}
+    span id='hourly_rate_fields' class="#{@job_listing.hourly? ? '' : 'hidden'}"
+      .control-group class="#{model_attribute_class_array(@job_listing, [:min_hours_per_week, :max_hours_per_week])}"
+        .control-label
+          | Hours per week
+        .controls
+          = render partial: 'shared/help_block', locals: {model: @job_listing, attribute: :min_hours_per_week}
+          = render partial: 'shared/help_block', locals: {model: @job_listing, attribute: :min_hours_per_week}
+
+          = f.select :min_hours_per_week, hours_hash, {selected: 1}, class: 'short-field'
+          | &nbsp;&nbsp;-&nbsp;&nbsp;
+          = f.select :max_hours_per_week, hours_hash, {selected: 40}, class: 'short-field'
+          = render partial: 'shared/help_inline', locals: {model: @job_listing, attribute: :min_hours_per_week}
+
+      .control-group class="#{model_attribute_class_array(@job_listing, [:min_hourly_rate, :max_hourly_rate])}"
+        .control-label
+          | Hourly Rate
+        .controls
+          = render partial: 'shared/help_block', locals: {model: @job_listing, attribute: :min_hourly_rate}
+          = render partial: 'shared/help_block', locals: {model: @job_listing, attribute: :max_hourly_rate}
+          ' $
+          = f.text_field :min_hourly_rate, class: 'short-field'
+          | &nbsp;&nbsp;-&nbsp;&nbsp;
+          ' $
+          = f.text_field :max_hourly_rate, class: 'short-field'
+
+    span id='fixed_rate_fields' class="#{@job_listing.fixed_price? ? '' : 'hidden'}"
+      .control-group class="#{model_attribute_class(@job_listing, :suggested_fixed_rate)}"
+        .control-label
+          = f.label :suggested_fixed_rate, 'Estimated Budget'
+        .controls
+          ' $
+          = f.text_field :suggested_fixed_rate, class: 'short-field'
+          = render partial: 'shared/help_inline', locals: {model: @job_listing, attribute: :suggested_fixed_rate}
+
+      .control-group class="#{model_attribute_class(@job_listing, :delivery_date)}"
+        .control-label
+          = f.label :delivery_date
+        .controls
+          = render partial: 'shared/help_block', locals: {model: @job_listing, attribute: :delivery_date}
+          = f.date_select :delivery_date, {default: Date.today + 60}, class: 'date-field'
+
+    - if action == :update
+      .control-label
+        = f.label :ended
+      .controls
+        label class="checkbox"
+          = f.check_box :ended
+          | The job listing has ended, and I no longer need applicants.
+
+    javascript:
+      $('document').ready(function() {
+        var refreshFields = function() {
+          current_rate_type = $("input[name='job_listing[suggested_rate_type]']:checked").val();
+          if (current_rate_type == 'hourly') {
+            $('#hourly_rate_fields').show();
+            $('#fixed_rate_fields').hide();
+          } else if (current_rate_type == 'fixed_price') {
+            $('#hourly_rate_fields').hide();
+            $('#fixed_rate_fields').show();
+          } else {
+            $('#hourly_rate_fields').hide();
+            $('#fixed_rate_fields').hide();
+          }
+        };
+
+        $('#job_listing_suggested_rate_type_hourly').on('click', refreshFields);
+        $('#job_listing_suggested_rate_type_fixed_price').on('click', refreshFields);
+        refreshFields();
+      });
+
+    .offset2.span5
+      p
+        = f.submit 'Save', class: 'btn', data: {disable_with: 'Submitting...'}

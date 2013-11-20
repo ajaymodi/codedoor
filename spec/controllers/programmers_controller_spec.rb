@@ -6,7 +6,7 @@ describe ProgrammersController do
     {user_id: user_id,
      title: 'title',
      description: 'description',
-     rate: 50,
+     hourly_rate: 50,
      availability: 'full-time',
      onsite_status: 'occasional',
      visibility: 'public',
@@ -171,18 +171,18 @@ describe ProgrammersController do
 
   describe 'POST update' do
     before :each do
-      @programmer = FactoryGirl.create(:programmer, user: @user, rate: 20, state: :activated)
+      @programmer = FactoryGirl.create(:programmer, user: @user, hourly_rate: 20, state: :activated)
     end
 
     it 'should ignore the user_id parameter, redirect to show and update the programmer' do
       programmer_params = valid_programmer('user-id-ignored')
-      programmer_params[:rate] = 500
+      programmer_params[:hourly_rate] = 500
       post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
       programmer = Programmer.find_by_user_id(@user.id)
       response.should redirect_to(programmer_path(programmer))
       flash[:notice].should eq('Your programmer account has been updated.')
       programmer.user_id.should eq(@user.id)
-      programmer.rate.should eq(500)
+      programmer.hourly_rate.should eq(500)
     end
 
     it 'should update skills' do
@@ -251,7 +251,7 @@ describe ProgrammersController do
     it 'should say that the programmer was created if the programmer was not activated' do
       @programmer.update_columns(state: 'incomplete')
       programmer_params = valid_programmer('user-id-ignored')
-      programmer_params[:rate] = 500
+      programmer_params[:hourly_rate] = 500
       post :update, user_id: @user.id, id: @programmer.id, programmer: programmer_params
       flash[:notice].should eq('Your programmer account has been created.')
     end
@@ -281,33 +281,33 @@ describe ProgrammersController do
     it 'should fail creation if the parameters passed in are invalid' do
       @programmer.update_columns(state: 'incomplete')
       invalid_programmer = valid_programmer(@user.id)
-      invalid_programmer[:rate] = 1000000
+      invalid_programmer[:hourly_rate] = 1000000
       post :update, user_id: @user.id, id: @programmer.id, programmer: invalid_programmer
       response.should render_template('edit')
       flash[:alert].should eq('Your programmer account could not be created.')
-      assigns(:programmer).errors[:rate].should eq(['must be less than or equal to 1000'])
+      assigns(:programmer).errors[:hourly_rate].should eq(['must be less than or equal to 1000'])
       # The rate in @programmer should be 1000000, because the user will see the input they typed in.
-      assigns(:programmer).rate.should eq(1000000)
-      @programmer.reload.rate.should eq(20)
+      assigns(:programmer).hourly_rate.should eq(1000000)
+      @programmer.reload.hourly_rate.should eq(20)
     end
 
     it 'should fail update if the parameters passed in are invalid' do
       invalid_programmer = valid_programmer(@user.id)
-      invalid_programmer[:rate] = 1000000
+      invalid_programmer[:hourly_rate] = 1000000
       post :update, user_id: @user.id, id: @programmer.id, programmer: invalid_programmer
       response.should render_template('edit')
       flash[:alert].should eq('Your programmer account could not be updated.')
-      assigns(:programmer).errors[:rate].should eq(['must be less than or equal to 1000'])
+      assigns(:programmer).errors[:hourly_rate].should eq(['must be less than or equal to 1000'])
       # The rate in @programmer should be 1000000, because the user will see the input they typed in.
-      assigns(:programmer).rate.should eq(1000000)
-      @programmer.reload.rate.should eq(20)
+      assigns(:programmer).hourly_rate.should eq(1000000)
+      @programmer.reload.hourly_rate.should eq(20)
     end
 
   end
 
   describe 'POST verify_contribution' do
     before :each do
-      @programmer = FactoryGirl.create(:programmer, user: @user, rate: 20, state: :activated)
+      @programmer = FactoryGirl.create(:programmer, user: @user, hourly_rate: 20, state: :activated)
       @user_account = FactoryGirl.create(:github_user_account, user: @user)
     end
 

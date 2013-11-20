@@ -31,3 +31,10 @@
     = check_box_tag 'contract_to_hire', true, @programmer_search.contract_to_hire
     | Will consider contract to hire
   = submit_tag 'Search', class: 'btn btn-search'
+
+  br
+  br
+  ' Or Create A
+  a href="#{new_job_listing_path}" target="_blank"
+    | Job Listing
+

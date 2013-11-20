@@ -1,0 +1,30 @@
+.span3
+  - if @show_back_to_search
+    = render partial: 'shared/back_to_search'
+.span6
+  h3
+    = @job_listing.title
+  p
+    = auto_link(simple_format(@job_listing.description), html: { target: "_blank" })
+  p
+    ' Type:
+    = @job_listing.suggested_rate_type.humanize
+
+  - if @job_listing.hourly?
+    p
+      ' Hours per week:
+      = "#{@job_listing.min_hours_per_week} - #{@job_listing.max_hours_per_week}"
+    p
+      ' Hourly rate:
+      = "#{@job_listing.min_hourly_rate} - #{@job_listing.max_hourly_rate}"
+  - else
+    p
+      ' Delivery date:
+      = @job_listing.delivery_date
+    p
+      ' Estimated budget:
+      = @job_listing.suggested_fixed_rate
+.span3
+  - unless @job_listing.client.user == current_user
+    strong
+      = link_to 'Apply', new_application_new_job_path(job_listing_id: @job_listing.id), class: 'btn btn-lg btn-success huge-button'

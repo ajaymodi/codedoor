@@ -1,28 +1,33 @@
-- both_categories = !@jobs_as_client.empty? && !@jobs_as_programmer.empty?
-
-- if both_categories
+- unless @jobs_as_client.empty?
   h3
     | Jobs as Client
-- @jobs_as_client.each do |job|
-  p
-    strong
-      = link_to job.name, edit_job_path(job)
-      |&nbsp;-&nbsp;
-      = job.programmer.user.full_name
-      |&nbsp;-&nbsp;
-    = job.state.humanize
+  - @jobs_as_client.each do |job|
+    p
+      strong
+        = link_to job.name, edit_job_path(job)
+        |&nbsp;-&nbsp;
+        = job.programmer.user.full_name
+        |&nbsp;-&nbsp;
+      = job.state.humanize
 
-- if both_categories
+- unless @job_listings_as_client.empty?
+  h3
+    | Job Listings as Client
+  - @job_listings_as_client.each do |job_listing|
+    p
+      = link_to "#{job_listing.title}#{job_listing.ended ? ' (ended)' : ''}", edit_job_listing_path(job_listing)
+
+- unless @jobs_as_programmer.empty?
   h3
     | Jobs as Programmer
-- @jobs_as_programmer.each do |job|
-  p
-    strong
-      = link_to job.name, edit_job_path(job)
-      |&nbsp;-&nbsp;
-      = job.client.user.full_name
-      |&nbsp;-&nbsp;
-    = job.state.humanize
+  - @jobs_as_programmer.each do |job|
+    p
+      strong
+        = link_to job.name, edit_job_path(job)
+        |&nbsp;-&nbsp;
+        = job.client.user.full_name
+        |&nbsp;-&nbsp;
+      = job.state.humanize
 
-- if @jobs_as_client.empty? && @jobs_as_programmer.empty?
+- if @jobs_as_client.empty? && @job_listings_as_client.empty? && @jobs_as_programmer.empty?
   | You currently have no jobs set up.

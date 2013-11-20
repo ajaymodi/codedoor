@@ -14,7 +14,7 @@ class DbUpdate
                          city: 'Vancouver',
                          country: 'CA')
       Programmer.create(title: "Test Title #{i}",
-                        rate: (20 + i),
+                        hourly_rate: (20 + i),
                         availability: (i.even? ? 'full-time' : 'part-time'),
                         onsite_status: (i.even? ? 'offsite' : 'occasional'),
                         visibility: (i.even? ? 'public' : 'codedoor'),

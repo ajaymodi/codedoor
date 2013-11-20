@@ -64,11 +64,11 @@
               label class='checkbox'
                 = check_box_tag 'programmer[skill_ids][]', skill.id, @programmer.skills.include?(skill)
                 = skill.name
-      .control-group class="#{model_attribute_class(@programmer, :rate)}"
+      .control-group class="#{model_attribute_class(@programmer, :hourly_rate)}"
         .control-label
-          = f.label :rate, 'Rate (USD)'
+          = f.label :hourly_rate, 'Rate (USD)'
         .controls
-          = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :rate}
+          = render partial: 'shared/help_block', locals: {model: @programmer, attribute: :hourly_rate}
           .row#full-time-explanation
             p.span5
               | As a full-time programmer, billing is generally done a daily basis.  The hourly rate is used when you spend an hour or two with a client.
@@ -83,7 +83,7 @@
               .row
                 .span2
                   | $
-                  = f.text_field(:rate, class: 'rate-field', id: 'hourly_rate_to_programmer')
+                  = f.text_field(:hourly_rate, class: 'rate-field', id: 'hourly_rate_to_programmer')
                   | /hour
                 .span2
                   strong

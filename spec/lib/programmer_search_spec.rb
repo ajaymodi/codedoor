@@ -5,9 +5,9 @@ describe ProgrammerSearch do
   before :each do
     js = Skill.find_by_name('JavaScript')
     c = Skill.find_by_name('C')
-    @js_programmer = FactoryGirl.create(:programmer, :qualified, visibility: 'public', skills: [js], rate: 50, contract_to_hire: true, modified_rank_score: 5)
-    @c_programmer = FactoryGirl.create(:programmer, :qualified, visibility: 'public', skills: [c], rate: 100, modified_rank_score: 6)
-    @part_time_programmer = FactoryGirl.create(:programmer, :qualified, visibility: 'public', rate: 200, availability: 'part-time', modified_rank_score: 4)
+    @js_programmer = FactoryGirl.create(:programmer, :qualified, visibility: 'public', skills: [js], hourly_rate: 50, contract_to_hire: true, modified_rank_score: 5)
+    @c_programmer = FactoryGirl.create(:programmer, :qualified, visibility: 'public', skills: [c], hourly_rate: 100, modified_rank_score: 6)
+    @part_time_programmer = FactoryGirl.create(:programmer, :qualified, visibility: 'public', hourly_rate: 200, availability: 'part-time', modified_rank_score: 4)
     @unqualified_programmer = FactoryGirl.create(:programmer, qualified: false)
   end
 

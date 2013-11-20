@@ -2,7 +2,7 @@ require 'spec_helper'
 
 feature 'Job setup', js: true do
   before :each do
-    @programmer = FactoryGirl.create(:programmer, :qualified, visibility: 'public', rate: 50, availability: 'part-time', user: FactoryGirl.create(:user_checked_terms, full_name: 'Test Programmer'))
+    @programmer = FactoryGirl.create(:programmer, :qualified, visibility: 'public', hourly_rate: 50, availability: 'part-time', user: FactoryGirl.create(:user_checked_terms, full_name: 'Test Programmer'))
   end
 
   scenario 'client searches for programmer and offers job' do

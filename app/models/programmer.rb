@@ -21,7 +21,7 @@ class Programmer < ActiveRecord::Base
 
   validates :user_id, presence: true, uniqueness: true
   validates :title, length: { minimum: 5, maximum: 80 }
-  validates :rate, numericality: { greater_than_or_equal_to: 20, less_than_or_equal_to: 1000, only_integer: true }
+  validates :hourly_rate, numericality: { greater_than_or_equal_to: 20, less_than_or_equal_to: 1000, only_integer: true }
   validates :availability, inclusion: { in: ['part-time', 'full-time', 'unavailable'], message: 'must be selected' }
   validates :calculated_availability, inclusion: { in: ['part-time', 'full-time', 'unavailable'], message: 'must be selected' }
   validates :onsite_status, inclusion: { in: ['offsite', 'visits_allowed', 'occasional', 'onsite'], message: 'must be selected' }

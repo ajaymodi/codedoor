@@ -1,4 +1,6 @@
 - is_client = @job.is_client?(current_user)
+- is_job_application = @job_listing.present? || @job.kind_of?(JobFromApplication)
+- is_initiator = (is_client && !is_job_application) || (!is_client && is_job_application)
 .span4
   p
     - if is_client
@@ -10,21 +12,22 @@
       br
       = @job.client.company
   p
-    - rate_text_object = @job.has_not_started? ? @programmer : @job
-    - if is_client
-      = client_rate_text(rate_text_object)
-    - else
-      = programmer_rate_text(rate_text_object)
+    - unless is_job_application
+      - rate_text_object = @job.has_not_started? ? @programmer : @job
+      - if is_client
+        = client_rate_text(rate_text_object)
+      - else
+        = programmer_rate_text(rate_text_object)
 
   - unless @job.new_record?
     - if @job.has_not_started?
-      - if is_client
+      - if is_initiator
         p
           = link_to 'Offer Contract', offer_job_path(@job), class: 'btn btn-success', method: :post
       - else
         | Job has not been offered yet
     - elsif @job.offered?
-      - if is_client
+      - if is_initiator
         p
           = link_to 'Cancel Contract', cancel_job_path(@job), class: 'btn btn-danger', method: :post
       - else

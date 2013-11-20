@@ -3,7 +3,7 @@ class Ability
 
   def initialize(user)
     if !user
-      can :read, Programmer, visibility: 'public'
+      can :read, [Programmer, JobListing], visibility: 'public'
       can :read, [ResumeItem, EducationItem, PortfolioItem]
     else
       can :manage, User, id: user.id
@@ -25,6 +25,24 @@ class Ability
           false
         end
       end
+      can :read, JobListing do |item|
+        if item.ended
+          user.client.present? && (item.client_id == user.client_id)
+        else
+          true
+        end
+      end
+      can :create, JobListing do |item|
+        user.client.present?
+      end
+      can [:update, :destroy], JobListing do |item|
+        if user.client.present?
+          user.client.id == item.client_id
+        else
+          false
+        end
+      end
+
       can_see_for_jobs(user)
     end
   end
@@ -33,7 +51,6 @@ class Ability
 
   def can_see_for_jobs(user)
     can [:create], Job do |job|
-      # Right now, you can hire yourself, although it is not exposed in the UI.  Why not?
       user.client.present?
     end
     can [:read, :update, :destroy], Job do |job|

@@ -1,10 +1,7 @@
 .row
   .span3
     - if @show_back_to_search
-      a id="back-to-search"
-        | Back to search
-      javascript:
-        $('#back-to-search').on('click', function(){ history.back(); });
+      = render partial: 'shared/back_to_search'
   .span6
     h4
       = @programmer.user.full_name
@@ -96,7 +93,7 @@
   .span3
     - unless @programmer.user == current_user
       strong
-        = link_to 'Contact', new_job_path(programmer_id: @programmer.id), class: 'btn btn-lg btn-success contact-programmer'
+        = link_to 'Contact', new_job_path(programmer_id: @programmer.id), class: 'btn btn-lg btn-success huge-button'
       - unless user_signed_in?
         br
         br

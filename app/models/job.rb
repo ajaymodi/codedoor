@@ -9,7 +9,6 @@ class Job < ActiveRecord::Base
   validates :client_id, presence: true
   validates :programmer_id, presence: true
   validates :name, presence: true
-  validates :rate, presence: true
   validates :availability, inclusion: { in: ['part-time', 'full-time'], message: 'must be selected' }
   validates :started_at, presence: true, if: Proc.new{|p| p.running? || p.finished?}
   validates :finished_at, presence: true, if: Proc.new{|p| p.finished? || p.disabled?}
@@ -18,6 +17,8 @@ class Job < ActiveRecord::Base
   validate :rate_is_unchanged, unless: :has_not_or_has_just_started?
   validate :availability_is_unchanged, unless: :has_not_or_has_just_started?
   validate :finished_after_started, if: Proc.new{|p| p.started_at && p.finished_at}
+
+  before_validation :normalize_by_rate_type
 
   after_save :calculate_programmer_availability
 
@@ -65,7 +66,23 @@ class Job < ActiveRecord::Base
     (client.user == user) ? programmer.user : client.user
   end
 
+  def hourly?
+    rate_type == 'hourly'
+  end
+
+  def fixed_price?
+    rate_type == 'fixed_price'
+  end
+
   private
+
+  def normalize_by_rate_type
+    if fixed_price?
+      self.hourly_rate = nil
+    elsif hourly?
+      self.fixed_rate = nil
+    end
+  end
 
   def calculate_programmer_availability
     if finished? || disabled? || running?
@@ -86,8 +103,9 @@ class Job < ActiveRecord::Base
     state_was.nil? || state_was == 'has_not_started'
   end
 
+  # TODO: If negotiation is allowed, then this would change
   def rate_is_unchanged
-    errors.add(:rate, 'must stay the same for the job') if rate_changed?
+    errors.add(:hourly_rate, 'must stay the same for the job') if hourly_rate_changed?
   end
 
   def availability_is_unchanged
