@@ -8,9 +8,10 @@ class BlogController < ApplicationController
     @blog_name = params[:id]
     unless BLOG_TITLES[@blog_name] && lookup_context.exists?(@blog_name, ['blog'], true)
       redirect_to action: :index
+    else
+      @custom_title = BLOG_TITLES[@blog_name].first
+      @custom_description = BLOG_TITLES[@blog_name].last
     end
-    @custom_title = BLOG_TITLES[@blog_name].first
-    @custom_description = BLOG_TITLES[@blog_name].last
   end
 
   BLOG_TITLES =
