@@ -12,7 +12,9 @@ html
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
-    meta name="description" content="CodeDoor is a marketplace for freelance programmers that have contributed to open source."
+    meta name="keywords" content="open source bounty, open source, programming career, software job, programming job, freelance programming, software career, open source job"
+    - if @custom_description
+      meta name="description" content="#{@custom_description}"
     = analytics_init if Rails.env.production?
   body
     = render partial: 'shared/navbar'

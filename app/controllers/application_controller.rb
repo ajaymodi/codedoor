@@ -22,6 +22,7 @@ class ApplicationController < ActionController::Base
   end
 
   def main
+    @custom_description = 'CodeDoor is a marketplace for freelance programmers that have contributed to open source software.'
     render('loggedout') unless current_user.present?
   end
 

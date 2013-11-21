@@ -9,9 +9,9 @@ class ProgrammersController < ApplicationController
     @programmers = @programmer_search.programmers.includes(:user)
 
     # SEO Hack
-    if !user_signed_in? && params[:skill_name].present?
-      @custom_title = "Hire #{params[:skill_name]} Open Source Programmers"
-    end
+    skill_in_title = params[:skill_name].present? ? "#{params[:skill_name]} " : ''
+    @custom_title = "Hire #{skill_in_title}Open Source Programmers"
+    @custom_description = "Hire #{skill_in_title}programmers that have contributed to open source.  Search by skill, hourly rate, and more."
   end
 
   def show
@@ -22,6 +22,8 @@ class ProgrammersController < ApplicationController
     @show_back_to_search = params[:search].present?
 
     @custom_title = @programmer.user.full_name
+    @custom_description = "#{@custom_title} - #{@programmer.title} - #{@programmer.user.location_text}"
+    @custom_description += " - #{@programmer.description}" if @programmer.description.present?
   end
 
   # There are no new or create routes.  This way, loading the controller will load repos,
