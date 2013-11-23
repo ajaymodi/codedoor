@@ -20,3 +20,7 @@ div class="navbar"
     - else
       a class="btn-auth btn-github pull-right" href="#{user_omniauth_authorize_path(:github)}"
         | Log in with GitHub
+      a class="pull-right" href="#{new_user_session_path}"
+        | Log in
+      a class="pull-right" href="#{new_user_registration_path}"
+        | Sign up

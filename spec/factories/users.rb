@@ -8,6 +8,10 @@ FactoryGirl.define do
     end
     password 'fakepassword'
 
+    to_create do |instance|
+      instance.save(validate: false)
+    end
+
     factory :user_checked_terms do
       city 'Vancouver'
       country 'CA'

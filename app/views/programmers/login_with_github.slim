@@ -1,0 +1,9 @@
+.row
+  .span3
+    = render partial: 'settings/sidebar', locals: {active: :programmer}
+  .span9
+    p
+      | To sign up as a programmer, you need to log in with your GitHub Account.
+    p
+      a id='large-github-button' class="btn-auth large btn-github" href="#{user_omniauth_authorize_path(:github)}"
+        | Log in with GitHub

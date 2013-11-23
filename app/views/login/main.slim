@@ -7,3 +7,11 @@
   p
     a id='large-github-button' class="btn-auth large btn-github" href="#{user_omniauth_authorize_path(:github)}"
       | Log in with GitHub
+  br
+  | For clients:
+  br
+  a href="new_user_registration_path"
+    | Sign up via email
+  br
+  a href="new_user_session_path"
+    | Log in via email

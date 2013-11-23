@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   validates :city, presence: true, if: :checked_terms?
   validates :state, presence: { if: Proc.new{|user| user.checked_terms? && user.american?} }
   validates :email, uniqueness: true, format: { with: /\A.*@.*\..*\z/ }
-  validates :checked_terms, inclusion: { in: [true], on: :update, message: '- The Terms of Use must be accepted.' }
+  validates :checked_terms, inclusion: { in: [true], message: '- The Terms of Use must be accepted' }
 
   def self.find_for_github_oauth(auth, affiliate_tag)
     user_account = GithubUserAccount.where(account_id: auth.uid).first
@@ -33,12 +33,7 @@ class User < ActiveRecord::Base
         end
         user.save(validate: false)
 
-        user_account = GithubUserAccount.new
-        user_account.user = user
-        user_account.account_id = auth.uid
-        user_account.username = auth.info.nickname
-        user_account.oauth_token = auth.credentials.token
-        user_account.save!
+        User.create_github_account!(user, auth)
       end
     end
     user
@@ -55,6 +50,15 @@ class User < ActiveRecord::Base
   # Since uniqueness is scoped to account_id and user, there can only be one
   def github_account
     self.github_user_accounts.first
+  end
+
+  def self.create_github_account!(user, auth)
+    user_account = GithubUserAccount.new
+    user_account.user = user
+    user_account.account_id = auth.uid
+    user_account.username = auth.info.nickname
+    user_account.oauth_token = auth.credentials.token
+    user_account.save!
   end
 
   def location_text

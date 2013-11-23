@@ -70,9 +70,11 @@ describe User do
       user.errors[:state].should eq(['can\'t be blank'])
     end
 
-    it 'should not require that the Terms of Use are checked to be created' do
+    # This is for the e-mail log in flow
+    it 'should require that the Terms of Use are checked to be created' do
       user = User.new(full_name: 'Test User Creation', email: 'user@creation.com', password: 'usercreation')
-      user.save.should be_true
+      user.valid?
+      user.errors[:checked_terms].should eq(['- The Terms of Use must be accepted'])
     end
   end
 

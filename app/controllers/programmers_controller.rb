@@ -30,13 +30,17 @@ class ProgrammersController < ApplicationController
   # which can be saved.  The programmer isn't "really created" unless it is activated,
   # which occurs on update.
   def edit
-    if current_user.programmer.present?
-      @programmer = current_user.programmer
+    if current_user.github_account.nil?
+      render :login_with_github
     else
-      @programmer = Programmer.new(user_id: current_user.id)
-      @programmer.save({validate: false})
+      if current_user.programmer.present?
+        @programmer = current_user.programmer
+      else
+        @programmer = Programmer.new(user_id: current_user.id)
+        @programmer.save({validate: false})
+      end
+      current_user.github_account.load_repos if current_user.github_account.present?
     end
-    current_user.github_account.load_repos if current_user.github_account.present?
   end
 
   def update
