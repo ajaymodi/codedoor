@@ -100,7 +100,7 @@ describe ProgrammersController do
     it 'if user is logged out if the programmer is not public, redirect to github' do
       sign_out(@user)
       get :show, id: @programmer.id
-      response.should redirect_to(user_omniauth_authorize_path(:github))
+      response.should redirect_to(login_path)
     end
 
     it 'does not render the show template logged out if the programmer is not activated' do
@@ -149,7 +149,7 @@ describe ProgrammersController do
       sign_out(@user)
       programmer = FactoryGirl.create(:programmer)
       get :edit, user_id: @user.id, id: programmer.id
-      response.should redirect_to(user_omniauth_authorize_path(:github))
+      response.should redirect_to(login_path)
     end
 
     it 'should not be allowed when the programmer id is different from that of the user' do
@@ -260,7 +260,7 @@ describe ProgrammersController do
     it 'should not be allowed when logged out' do
       sign_out(@user)
       post :update, user_id: @user.id, id: @programmer.id, programmer: valid_programmer(@user.id)
-      response.should redirect_to(user_omniauth_authorize_path(:github))
+      response.should redirect_to(login_path)
     end
 
     it 'should not be allowed if id refers to a programmer not associated with the user' do

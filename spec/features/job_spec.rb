@@ -44,7 +44,11 @@ feature 'Job setup', js: true do
 
     click_link 'Contact'
 
-    # Contact button requires login, so put into oAuth flow, and then create user page
+    # Contact button requires login, so put into login page, oAuth flow, and then create user page
+    page.should have_content 'Login Required'
+    page.should have_content 'To access the following CodeDoor page, you need to log in with your GitHub account.'
+    find('#large-github-button').click
+
     page.should have_content 'By checking this box, I agree to abide by CodeDoor\'s'
     check('user_checked_terms')
     select('United States', from: 'user_country')

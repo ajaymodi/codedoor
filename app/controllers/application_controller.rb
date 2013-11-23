@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
 
   def next_path_for_account(account)
     if current_user.nil?
-      user_omniauth_authorize_path(:github)
+      login_path
     elsif !current_user.checked_terms?
       edit_user_path(current_user)
     elsif (account == :client) && current_user.client.nil?
