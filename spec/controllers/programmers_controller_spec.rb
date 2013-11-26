@@ -137,6 +137,13 @@ describe ProgrammersController do
       response.should render_template('edit')
     end
 
+    it 'should render different template when programmer does not have GitHub account' do
+      programmer = FactoryGirl.create(:programmer, user: @user)
+      get :edit, user_id: @user.id, id: programmer.id
+      assigns(:programmer).should eq(programmer)
+      response.should render_template('login_with_github')
+    end
+
     it 'should not be allowed when terms are not checked' do
       programmer = FactoryGirl.create(:programmer, user: @user)
       @user.checked_terms = false
