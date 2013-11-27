@@ -1,8 +1,22 @@
 .blog
-  .span2
-    p
-    p
-      a href='/blog'
-        | Back to index
-  .span8
-    = render partial: "blog/#{@blog_name}"
+  .row
+    .span2
+      p
+      p
+        a href='/blog'
+          | Back to index
+    .span8
+      = render partial: "blog/#{@blog_name}"
+  .row
+    .offset2.span8
+      hr
+      p
+        ' At CodeDoor, you will only find the best programmers that have
+        a href="/programmers" target='_blank'
+          | contributed to meaningful open source projects
+        | .
+      p
+        ' If you have contributed to a major open source project, sign up
+        a href='/' target='_blank'
+          | here
+        | !
