@@ -16,14 +16,14 @@
       = "#{@job_listing.min_hours_per_week} - #{@job_listing.max_hours_per_week}"
     p
       ' Hourly rate:
-      = "#{@job_listing.min_hourly_rate} - #{@job_listing.max_hourly_rate}"
+      = "$#{@job_listing.min_hourly_rate} - $#{@job_listing.max_hourly_rate}"
   - else
     p
       ' Delivery date:
       = @job_listing.delivery_date
     p
       ' Estimated budget:
-      = @job_listing.suggested_fixed_rate
+      = "$#{@job_listing.suggested_fixed_rate}"
 .span3
   - unless @job_listing.client.user == current_user
     strong
