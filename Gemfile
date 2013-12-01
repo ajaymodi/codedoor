@@ -86,8 +86,8 @@ end
 group :development, :test do
   gem 'pry'
   gem 'pry-debugger'
-  gem 'rspec-rails', '~> 2.14.0'
-  gem 'rspec-mocks', '~> 2.14.3'
+  gem 'rspec-rails'
+  gem 'rspec-mocks'
 end
 
 group :test do
@@ -95,7 +95,7 @@ group :test do
   gem 'shoulda'
   gem 'capybara'
   gem 'poltergeist'
-  gem 'database_cleaner', '~> 1.0.1'
+  gem 'database_cleaner'
   gem 'launchy'
   gem 'simplecov', require: false
   gem 'coveralls', require: false

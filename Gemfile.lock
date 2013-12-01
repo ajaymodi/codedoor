@@ -299,7 +299,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   compass-rails (~> 2.0.alpha.0)
   coveralls
-  database_cleaner (~> 1.0.1)
+  database_cleaner
   devise (~> 3.0.1)
   factory_girl_rails
   fakeweb
@@ -324,8 +324,8 @@ DEPENDENCIES
   rails_12factor
   rails_autolink (~> 1.1.5)
   rest-client (~> 1.6.7)
-  rspec-mocks (~> 2.14.3)
-  rspec-rails (~> 2.14.0)
+  rspec-mocks
+  rspec-rails
   sass-rails (~> 4.0.0)
   sdoc
   shoulda
