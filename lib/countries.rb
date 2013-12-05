@@ -93,6 +93,7 @@ class Countries
       :'Jersey' => :JE,
       :'Jordan' => :JO,
       :'Kazakhstan ' => :KZ,
+      :'Kenya' => :KE,
       :'Kiribati' => :KI,
       :'Korea, Republic Of' => :KR,
       :'Kuwait' => :KW,
