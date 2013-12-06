@@ -13,6 +13,7 @@ class JobsController < ApplicationController
       @job_listings_as_client = JobListing.where(client_id: current_user.client.id)
     else
       @jobs_as_client = []
+      @job_listings_as_client = []
     end
     @jobs_as_programmer = current_user.completed_programmer_account? ? Job.where(programmer_id: current_user.programmer.id) : []
   end
