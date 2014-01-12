@@ -40,7 +40,7 @@ class JobsController < ApplicationController
     @job.job_messages.first.sender_is_client = true if @job.job_messages.present?
 
     authorize! :create, @job
-    create_job(offer_job_with_message(@job), :new)
+    create_job_or_message(offer_job_with_message(@job), @job.job_messages.first, :new)
   end
 
   def new_application
@@ -70,7 +70,7 @@ class JobsController < ApplicationController
     @job.availability = @programmer.unavailable? ? 'part-time' : @programmer.availability
 
     authorize! :create, @job
-    create_job(offer_job_with_message(@job), :new_application)
+    create_job_or_message(offer_job_with_message(@job), @job.job_messages.first, :new_application)
   end
 
   def edit
@@ -84,14 +84,8 @@ class JobsController < ApplicationController
     @job_message = JobMessage.new(create_message_params)
     @job_message.sender_is_client = @job.is_client?(current_user)
     @job.job_messages << @job_message
-    job_offered = offer_job_with_message(@job)
-    if @job.save
-      UserMailer.message_sent(@job.other_user(current_user), @job, @job_message, current_user, job_offered).deliver
-      flash[:notice] = job_offered ? 'The job has been offered.' : 'Your message has been sent.'
-    else
-      flash[:alert] = job_offered ? 'The job could not be offered.' : 'Your message could not be sent.'
-    end
-    redirect_to action: :edit
+
+    create_job_or_message(offer_job_with_message(@job), @job_message, :edit)
   end
 
   def offer
@@ -117,9 +111,9 @@ class JobsController < ApplicationController
 
   private
 
-  def create_job(job_offered, failure_template)
+  def create_job_or_message(job_offered, job_message, failure_template)
     if @job.save
-      UserMailer.message_sent(@job.other_user(current_user), @job, @job.job_messages.first, current_user, job_offered).deliver
+      UserMailer.message_sent(@job.other_user(current_user), @job, job_message, current_user, job_offered).deliver
       flash[:notice] = job_offered ? 'The job has been offered.' : 'Your message has been sent.'
       redirect_to edit_job_path(@job)
     else

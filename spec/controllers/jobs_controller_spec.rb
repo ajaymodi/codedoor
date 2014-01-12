@@ -172,7 +172,7 @@ describe JobsController do
       sign_in(@client.user)
       job = FactoryGirl.create(:job, client: @client, programmer: @programmer)
       post :create_message, id: job.id, job_message: {content: ''}
-      response.should redirect_to(edit_job_path(job))
+      response.should render_template('edit')
       flash[:alert].should eq('Your message could not be sent.')
       job.reload.job_messages.should eq([])
     end
