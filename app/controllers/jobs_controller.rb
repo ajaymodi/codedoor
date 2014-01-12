@@ -130,14 +130,10 @@ class JobsController < ApplicationController
 
   def required_account_is_conditional
     @job = Job.find(params[:id])
-    if @job.kind_of?(JobFromDirectContact)
-      client_required if action_name == 'offer' || action_name == 'cancel'
-      programmer_required if action_name == 'start' || action_name == 'decline'
-    elsif @job.kind_of?(JobFromApplication)
-      programmer_required if action_name == 'offer' || action_name == 'cancel'
-      client_required if action_name == 'start' || action_name == 'decline'
-    else
-      raise "Invalid job type #{@job.type}"
+    if action_name == 'offer' || action_name == 'cancel'
+      @job.kind_of?(JobFromDirectContact) ? client_required : programmer_required
+    elsif action_name == 'start' || action_name == 'decline'
+      @job.kind_of?(JobFromDirectContact) ? programmer_required : client_required
     end
   end
 
