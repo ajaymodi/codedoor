@@ -36,14 +36,15 @@ module ApplicationHelper
   private
 
   def rate_text(rate_object, viewing_as_programmer)
+    precision = rate.to_i.to_f == rate ? 0 : 2
     case rate_object.availability
     when 'part-time'
       rate = viewing_as_programmer ? rate_object.hourly_rate : rate_object.hourly_rate_to_client
       # If the rate happens to be a certain number of dollars, do not include cents.  Otherwise, include cents.
-      "#{number_to_currency(rate, precision: rate.to_i.to_f == rate ? 0 : 2)} / hour"
+      "#{number_to_currency(rate, precision: precision)} / hour"
     when 'full-time'
       rate = viewing_as_programmer ? rate_object.daily_rate_to_programmer : rate_object.daily_rate_to_client
-      "#{number_to_currency(rate, precision: rate.to_i.to_f == rate ? 0 : 2)} / day"
+      "#{number_to_currency(rate, precision: precision)} / day"
     else
       'Unavailable'
     end
