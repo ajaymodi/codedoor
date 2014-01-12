@@ -38,17 +38,9 @@ class JobsController < ApplicationController
     @job.rate_type = 'hourly'
     @job.availability = @programmer.availability
     @job.job_messages.first.sender_is_client = true if @job.job_messages.present?
-    job_offered = offer_job_with_message(@job)
 
     authorize! :create, @job
-    if @job.save
-      UserMailer.message_sent(@job.other_user(current_user), @job, @job.job_messages.first, current_user, job_offered).deliver
-      flash[:notice] = job_offered ? 'The job has been offered.' : 'Your message has been sent.'
-      redirect_to edit_job_path(@job)
-    else
-      flash[:alert] = job_offered ? 'The job could not be offered.' : 'Your message could not be sent.'
-      render :new
-    end
+    create_job(offer_job_with_message(@job), :new)
   end
 
   def new_application
@@ -76,18 +68,9 @@ class JobsController < ApplicationController
     @job.client = @job_listing.client
     @job.name = @job_listing.title
     @job.availability = @programmer.unavailable? ? 'part-time' : @programmer.availability
-    job_offered = offer_job_with_message(@job)
 
     authorize! :create, @job
-    if @job.save
-      UserMailer.message_sent(@job.other_user(current_user), @job, @job.job_messages.first, current_user, job_offered).deliver
-      flash[:notice] = job_offered ? 'You have bid on the job.' : 'Your message has been sent.'
-      redirect_to edit_job_path(@job)
-    else
-      flash[:alert] = job_offered ? 'You could not bid on the job.' : 'Your message could not be sent.'
-      @job = @job.becomes(Job)
-      render :new_application
-    end
+    create_job(offer_job_with_message(@job), :new_application)
   end
 
   def edit
@@ -133,6 +116,17 @@ class JobsController < ApplicationController
   end
 
   private
+
+  def create_job(job_offered, failure_template)
+    if @job.save
+      UserMailer.message_sent(@job.other_user(current_user), @job, @job.job_messages.first, current_user, job_offered).deliver
+      flash[:notice] = job_offered ? 'The job has been offered.' : 'Your message has been sent.'
+      redirect_to edit_job_path(@job)
+    else
+      flash[:alert] = job_offered ? 'The job could not be offered.' : 'Your message could not be sent.'
+      render failure_template
+    end
+  end
 
   def required_account_is_conditional
     @job = Job.find(params[:id])
