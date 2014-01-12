@@ -94,15 +94,15 @@ class JobsController < ApplicationController
   end
 
   def cancel
-    state_change({direct_contact: :update_as_client, application: :update_as_programmer}, ->{@job.offered?}, ->{@job.cancel!}, :canceled, 'The job has been canceled.', 'The job could not be canceled.')
+    state_change({direct_contact: :update_as_client, application: :update_as_programmer}, job_offered_lambda, ->{@job.cancel!}, :canceled, 'The job has been canceled.', 'The job could not be canceled.')
   end
 
   def start
-    state_change({direct_contact: :update_as_programmer, application: :update_as_client}, ->{@job.offered?}, ->{@job.start!}, :started, 'The job has been started.', 'The job could not be started.')
+    state_change({direct_contact: :update_as_programmer, application: :update_as_client}, job_offered_lambda, ->{@job.start!}, :started, 'The job has been started.', 'The job could not be started.')
   end
 
   def decline
-    state_change({direct_contact: :update_as_programmer, application: :update_as_client}, ->{@job.offered?}, ->{@job.decline!}, :declined, 'The job has been declined.', 'The job could not be declined.')
+    state_change({direct_contact: :update_as_programmer, application: :update_as_client}, job_offered_lambda, ->{@job.decline!}, :declined, 'The job has been declined.', 'The job could not be declined.')
   end
 
   def finish
@@ -110,6 +110,10 @@ class JobsController < ApplicationController
   end
 
   private
+
+  def job_offered_lambda
+    ->{@job.offered?}
+  end
 
   def create_job_or_message(job_offered, job_message, failure_template)
     if @job.save
